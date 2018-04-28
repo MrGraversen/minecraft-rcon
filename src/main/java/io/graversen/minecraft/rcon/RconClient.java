@@ -6,10 +6,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RconClient implements Closeable
@@ -41,24 +38,43 @@ public class RconClient implements Closeable
         try
         {
             final SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(hostname, port));
-            return new RconClient(socketChannel);
+            final RconClient rconClient = new RconClient(socketChannel);
+
+            final Future<RconResponse> authenticateResponse = rconClient.authenticateClient(password);
+            final RconResponse rconResponse = authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
+
+            
         }
-        catch (IOException e)
+        catch (IOException | InterruptedException | ExecutionException e)
         {
-            throw new RuntimeException(String.format("Could not connect to %s:%d", hostname, port), e);
+            throw new RuntimeException(String.format("Connection to %s:%d failed", hostname, port), e);
+        }
+        catch (TimeoutException e)
+        {
+            throw new RuntimeException(String.format("Connection to %s:%d timed out", hostname, port), e);
         }
     }
 
-    public Future<RconResponse> send(String command)
+    private Future<RconResponse> authenticateClient(String password)
     {
-        return executorService.submit(doSynchronousSend(command));
+        return sendRaw(RCON_AUTHENTICATION, password);
     }
 
-    private Callable<RconResponse> doSynchronousSend(String command)
+    public Future<RconResponse> sendRaw(String command)
+    {
+        return sendRaw(RCON_COMMAND, command);
+    }
+
+    private Future<RconResponse> sendRaw(int requestType, String command)
+    {
+        return executorService.submit(doSynchronousSend(currentRequestCounter.incrementAndGet(), requestType, command));
+    }
+
+    private Callable<RconResponse> doSynchronousSend(int requestCount, int requestType, String command)
     {
         return () -> {
             final long requestStart = System.currentTimeMillis();
-            
+
             final long requestEnd = System.currentTimeMillis();
             return new RconResponse(requestStart, requestEnd, "Hello m8");
         };
