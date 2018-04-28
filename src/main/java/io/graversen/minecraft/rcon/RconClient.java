@@ -1,6 +1,5 @@
 package io.graversen.minecraft.rcon;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -9,7 +8,7 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RconClient implements Closeable
+public class RconClient implements IRconClient
 {
     private static final int DEFAULT_PORT = 25575;
 
@@ -20,17 +19,29 @@ public class RconClient implements Closeable
     private final SocketChannel rconSocketChannel;
     private final AtomicInteger currentRequestCounter;
     private final ExecutorService executorService;
+    private final Rcon rcon;
 
     private RconClient(SocketChannel rconSocketChannel)
     {
         this.rconSocketChannel = rconSocketChannel;
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
+        this.rcon = new Rcon(this);
+    }
+
+    private Future<RconResponse> authenticateClient(String password)
+    {
+        return sendRaw(RCON_AUTHENTICATION, password);
+    }
+
+    public Rcon rcon()
+    {
+        return rcon;
     }
 
     public static RconClient connect(String hostname, String password)
     {
-        return RconClient.connect(hostname, password, DEFAULT_PORT);
+        return RconClient.connect(hostname, password, RconClient.DEFAULT_PORT);
     }
 
     public static RconClient connect(String hostname, String password, int port)
@@ -47,7 +58,7 @@ public class RconClient implements Closeable
         }
         catch (IOException | InterruptedException | ExecutionException e)
         {
-            throw new RuntimeException(String.format("Connection to %s:%d failed", hostname, port), e);
+            throw new RuntimeException(String.format("Connection to %s:%d failed: %s", hostname, port, e.getCause().getMessage()), e);
         }
         catch (TimeoutException e)
         {
@@ -55,11 +66,8 @@ public class RconClient implements Closeable
         }
     }
 
-    private Future<RconResponse> authenticateClient(String password)
-    {
-        return sendRaw(RCON_AUTHENTICATION, password);
-    }
 
+    @Override
     public Future<RconResponse> sendRaw(String command)
     {
         return sendRaw(RCON_COMMAND, command);
@@ -73,6 +81,7 @@ public class RconClient implements Closeable
     private Callable<RconResponse> doSynchronousSend(int requestType, String command)
     {
         return () -> {
+            System.out.println(String.format("Piping command: %s", command));
             final long requestStart = System.currentTimeMillis();
 
             final int requestId = currentRequestCounter.getAndIncrement();
@@ -93,6 +102,13 @@ public class RconClient implements Closeable
         final int byteSize = readData(Integer.BYTES).getInt();
         final ByteBuffer dataBytes = readData(byteSize - (2 * Byte.BYTES));
         final ByteBuffer packageTailBytes = readData(2 * Byte.BYTES);
+
+        final int responseId = dataBytes.getInt();
+
+        if (responseId == RCON_AUTHENTICATION_FAILURE)
+        {
+            throw new AuthenticationException();
+        }
 
         final byte byteOne = packageTailBytes.get(0);
         final byte byteTwo = packageTailBytes.get(1);
@@ -128,7 +144,6 @@ public class RconClient implements Closeable
             throw new RuntimeException(String.format("Failed to read %d bytes", bytes), e);
         }
     }
-
 
     private ByteBuffer createRconByteBuffer(int requestCount, int requestType, String command)
     {
