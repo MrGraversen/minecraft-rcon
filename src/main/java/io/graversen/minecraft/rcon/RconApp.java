@@ -7,7 +7,7 @@ public class RconApp
 {
     public static void main(String[] args) throws ExecutionException, InterruptedException
     {
-        final RconClient rconClient = RconClient.connect("localhost", "abc123");
+        final RconClient rconClient = RconClient.connect("localhost", "Xabc123");
         final Future<RconResponse> rconResponse = rconClient.sendRaw("lol");
         final RconResponse rconResponse1 = rconResponse.get();
         System.out.println(rconResponse1.getResponseString());
