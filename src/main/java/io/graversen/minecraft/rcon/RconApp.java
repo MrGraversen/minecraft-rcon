@@ -2,14 +2,15 @@ package io.graversen.minecraft.rcon;
 
 import io.graversen.minecraft.rcon.commands.builders.EffectCommandBuilder;
 import io.graversen.minecraft.rcon.commands.builders.TellRawCommandBuilder;
+import io.graversen.minecraft.rcon.commands.objects.DifficultyCommand;
 import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.util.Colors;
+import io.graversen.minecraft.rcon.util.Difficulties;
 import io.graversen.minecraft.rcon.util.Effects;
 import io.graversen.minecraft.rcon.util.Selectors;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
@@ -34,5 +35,7 @@ public class RconApp
         final EffectCommand effectCommand = effectCommandBuilder.targeting(Selectors.ALL_PLAYERS).withEffect(Effects.JUMP_BOOST, 5).build();
 
         rconClient.rcon().effect(effectCommand);
+
+        rconClient.rcon().difficulty(Difficulties.PEACEFUL);
     }
 }

@@ -83,7 +83,7 @@ public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectComm
         }
         else
         {
-            throw new IllegalArgumentException("Could not construct valid TellRaw Command");
+            throw new IllegalArgumentException("Could not construct valid Effect Command");
         }
     }
 }
