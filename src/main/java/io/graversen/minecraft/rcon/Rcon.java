@@ -3,7 +3,9 @@ package io.graversen.minecraft.rcon;
 import com.google.gson.Gson;
 import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
+import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
 import io.graversen.minecraft.rcon.util.Difficulties;
+import io.graversen.minecraft.rcon.util.TitlePositions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -65,6 +67,13 @@ public class Rcon
         final String command = "difficulty";
 
         rconClient.sendRaw(String.format("%s %s", command, difficulty.getDifficultyName()));
+    }
+
+    public void title(TitleCommand titleCommand)
+    {
+        final String command = "title";
+
+        rconClient.sendRaw(String.format("%s %s %s %s", command, titleCommand.getTarget(), titleCommand.getPosition(), gson.toJson(titleCommand)));
     }
 
     private String getResponseString(Future<RconResponse> responseFuture)
