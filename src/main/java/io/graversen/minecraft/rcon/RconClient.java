@@ -81,7 +81,8 @@ public class RconClient implements IRconClient
     private Callable<RconResponse> doSynchronousSend(int requestType, String command)
     {
         return () -> {
-            System.out.println(String.format("Piping command: %s", command));
+            printCommand(command);
+
             final long requestStart = System.currentTimeMillis();
 
             final int requestId = currentRequestCounter.getAndIncrement();
@@ -168,5 +169,10 @@ public class RconClient implements IRconClient
     {
         executorService.shutdown();
         rconSocketChannel.close();
+    }
+
+    private void printCommand(String command)
+    {
+        System.out.println(String.format("[RconClient]: Piping command: %s", command));
     }
 }

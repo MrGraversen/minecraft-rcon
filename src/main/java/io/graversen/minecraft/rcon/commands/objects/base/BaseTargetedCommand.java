@@ -2,15 +2,15 @@ package io.graversen.minecraft.rcon.commands.objects.base;
 
 public class BaseTargetedCommand
 {
-    private transient final String getTarget;
+    private transient final String target;
 
-    public BaseTargetedCommand(String getTarget)
+    public BaseTargetedCommand(String target)
     {
-        this.getTarget = getTarget;
+        this.target = target;
     }
 
-    public String getGetTarget()
+    public String getTarget()
     {
-        return getTarget;
+        return target;
     }
 }

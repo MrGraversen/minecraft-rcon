@@ -1,4 +1,4 @@
-package io.graversen.minecraft.rcon.commands.builders;
+package io.graversen.minecraft.rcon.commands.builders.interfaces;
 
 import io.graversen.minecraft.rcon.util.Selectors;
 

@@ -1,5 +1,7 @@
 package io.graversen.minecraft.rcon.commands.builders;
 
+import io.graversen.minecraft.rcon.commands.builders.interfaces.ICommandBuilder;
+import io.graversen.minecraft.rcon.commands.builders.interfaces.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.common.ClickEvent;
 import io.graversen.minecraft.rcon.commands.objects.common.HoverEvent;

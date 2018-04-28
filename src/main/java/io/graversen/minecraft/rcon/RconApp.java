@@ -1,8 +1,11 @@
 package io.graversen.minecraft.rcon;
 
+import io.graversen.minecraft.rcon.commands.builders.EffectCommandBuilder;
 import io.graversen.minecraft.rcon.commands.builders.TellRawCommandBuilder;
+import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.util.Colors;
+import io.graversen.minecraft.rcon.util.Effects;
 import io.graversen.minecraft.rcon.util.Selectors;
 
 import java.util.List;
@@ -22,9 +25,14 @@ public class RconApp
         System.out.println(rconClient.sendRaw("list").get().getResponseString());
 
         TellRawCommandBuilder tellRawCommandBuilder = new TellRawCommandBuilder();
-        final TellRawCommand tellRawCommand = tellRawCommandBuilder.targeting("MrSkurk").withColor(Colors.RED).withText("Hej med dig fra TellRawCommandBuilder").build();
+        final TellRawCommand tellRawCommand = tellRawCommandBuilder.targeting("MrSkurk").withColor(Colors.GREEN).withText("Hej med dig fra TellRawCommandBuilder").build();
         rconClient.rcon().tellRaw(tellRawCommand);
 
         final List<String> playerList = rconClient.rcon().playerList();
+
+        EffectCommandBuilder effectCommandBuilder = new EffectCommandBuilder();
+        final EffectCommand effectCommand = effectCommandBuilder.targeting(Selectors.ALL_PLAYERS).withEffect(Effects.JUMP_BOOST, 5).build();
+
+        rconClient.rcon().effect(effectCommand);
     }
 }
