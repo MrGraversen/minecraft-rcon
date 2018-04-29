@@ -6,7 +6,9 @@ import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
 import io.graversen.minecraft.rcon.util.Difficulties;
 import io.graversen.minecraft.rcon.util.TitlePositions;
+import io.graversen.minecraft.rcon.util.WhiteListModes;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Future;
@@ -39,9 +41,17 @@ public class Rcon
         final Future<RconResponse> rconResponse = rconClient.sendRaw(command);
 
         final String responseString = getResponseString(rconResponse);
-        final String[] players = responseString.split(":")[1].split(",");
+        final String[] players = responseString.split(":");
 
-        return Arrays.asList(players);
+        if (players.length == 2)
+        {
+            return Arrays.asList(players[1].split(","));
+        }
+        else
+        {
+            return new ArrayList<>();
+        }
+
     }
 
     public void effect(EffectCommand effectCommand)
@@ -74,6 +84,55 @@ public class Rcon
         final String command = "title";
 
         rconClient.sendRaw(String.format("%s %s %s %s", command, titleCommand.getTarget(), titleCommand.getPosition(), gson.toJson(titleCommand)));
+    }
+
+    public void whiteList(WhiteListModes whiteListMode, String playerName)
+    {
+        final String command = "whitelist";
+
+        switch (whiteListMode)
+        {
+            case ADD:
+            case REMOVE:
+                rconClient.sendRaw(String.format("%s %s %s", command, whiteListMode.getModeName(), playerName));
+                break;
+            case LIST:
+            case OFF:
+            case ON:
+            case RELOAD:
+                rconClient.sendRaw(String.format("%s %s", command, whiteListMode.getModeName()));
+                break;
+        }
+    }
+
+    public String seed()
+    {
+        final Future<RconResponse> responseFuture = rconClient.sendRaw("seed");
+        final String seedResponse = getResponseString(responseFuture);
+
+        return seedResponse.split(":")[1].trim();
+    }
+
+    public void kick(String playerName, String reason)
+    {
+        final String command = "kick";
+        if (reason == null) reason = "Kicked by Admin";
+
+        rconClient.sendRaw(String.format("%s %s \"%s\"", command, playerName, reason));
+    }
+
+    public void ban(String playerName, String reason)
+    {
+        final String command = "ban";
+        if (reason == null) reason = "Banned by Admin";
+
+        rconClient.sendRaw(String.format("%s %s \"%s\"", command, playerName, reason));
+    }
+
+    public void pardon(String playerName)
+    {
+        final String command = "pardon";
+        rconClient.sendRaw(String.format("%s %s", command, playerName));
     }
 
     private String getResponseString(Future<RconResponse> responseFuture)

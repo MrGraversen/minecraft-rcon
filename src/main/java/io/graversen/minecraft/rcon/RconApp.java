@@ -46,5 +46,7 @@ public class RconApp
         rconClient.rcon().title(title1);
         rconClient.rcon().title(title2);
         rconClient.rcon().title(title3);
+
+        System.out.println(rconClient.rcon().seed());
     }
 }
