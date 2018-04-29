@@ -135,6 +135,13 @@ public class Rcon
         return seedResponse.split(":")[1].trim();
     }
 
+    public void stop()
+    {
+        final String command = "stop";
+
+        rconClient.sendRaw(command);
+    }
+
     public void kick(String playerName, String reason)
     {
         final String command = "kick";
