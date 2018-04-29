@@ -5,6 +5,7 @@ import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
 import io.graversen.minecraft.rcon.util.Difficulties;
+import io.graversen.minecraft.rcon.util.GameModes;
 import io.graversen.minecraft.rcon.util.GameRules;
 import io.graversen.minecraft.rcon.util.WhiteListModes;
 
@@ -112,6 +113,20 @@ public class Rcon
         }
     }
 
+    public void gameMode(GameModes gameMode, String playerName)
+    {
+        final String command = "gamemode";
+
+        if (playerName == null)
+        {
+            rconClient.sendRaw(String.format("%s %s", command, gameMode.getGameModeString()));
+        }
+        else
+        {
+            rconClient.sendRaw(String.format("%s %s %s", command, gameMode.getGameModeString(), playerName));
+        }
+    }
+
     public String seed()
     {
         final Future<RconResponse> responseFuture = rconClient.sendRaw("seed");
@@ -143,6 +158,20 @@ public class Rcon
         rconClient.sendRaw(String.format("%s %s", command, playerName));
     }
 
+    public void op(String playerName)
+    {
+        final String command = "op";
+
+        rconClient.sendRaw(String.format("%s %s", command, playerName));
+    }
+
+    public void deOp(String playerName)
+    {
+        final String command = "deop";
+
+        rconClient.sendRaw(String.format("%s %s", command, playerName));
+    }
+
     private String getResponseString(Future<RconResponse> responseFuture)
     {
         try
@@ -155,9 +184,14 @@ public class Rcon
         }
     }
 
-    private class GameRuleWrapper
+    public class GameRuleWrapper
     {
         private final String command = "gamerule";
+
+        private GameRuleWrapper()
+        {
+
+        }
 
         public void setGameRule(GameRules gameRule, boolean value)
         {
@@ -171,7 +205,7 @@ public class Rcon
 
         public String getGameRule(GameRules gameRule)
         {
-            final Future<RconResponse> responseFuture = rconClient.sendRaw(String.format("%s %s", command, gameRule));
+            final Future<RconResponse> responseFuture = rconClient.sendRaw(String.format("%s %s", command, gameRule.getGameRuleName()));
             return getResponseString(responseFuture);
         }
 

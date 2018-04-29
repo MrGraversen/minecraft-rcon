@@ -47,6 +47,13 @@ public class RconApp
         rconClient.rcon().title(title2);
         rconClient.rcon().title(title3);
 
+        rconClient.rcon().gameRules().setGameRule(GameRules.DISABLE_ELYTRA_MOVEMENT_CHECK, true);
+        System.out.println(rconClient.rcon().gameRules().getGameRule(GameRules.DO_FIRE_TICK));
+
         System.out.println(rconClient.rcon().seed());
+
+        rconClient.rcon().op("MrSkurk");
+
+        rconClient.rcon().gameMode(GameModes.CREATIVE, "MrSkurk");
     }
 }
