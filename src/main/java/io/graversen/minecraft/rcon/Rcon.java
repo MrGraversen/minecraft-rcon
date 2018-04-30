@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
-import io.graversen.minecraft.rcon.util.Difficulties;
-import io.graversen.minecraft.rcon.util.GameModes;
-import io.graversen.minecraft.rcon.util.GameRules;
-import io.graversen.minecraft.rcon.util.WhiteListModes;
+import io.graversen.minecraft.rcon.util.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -177,6 +174,20 @@ public class Rcon
         final String command = "deop";
 
         rconClient.sendRaw(String.format("%s %s", command, playerName));
+    }
+
+    public void weather(Weathers weather, int duration)
+    {
+        final String command = "weather";
+
+        if (duration > 0)
+        {
+            rconClient.sendRaw(String.format("%s %s %d", command, weather.getWeatherString(), duration));
+        }
+        else
+        {
+            rconClient.sendRaw(String.format("%s %s", command, weather.getWeatherString()));
+        }
     }
 
     private String getResponseString(Future<RconResponse> responseFuture)
