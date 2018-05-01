@@ -63,7 +63,7 @@ public class RconClient implements IRconClient
         }
         catch (IOException | InterruptedException | ExecutionException e)
         {
-            throw new RuntimeException(String.format("Connection to %s:%d failed: %s", hostname, port, e.getCause().getMessage()), e);
+            throw new RuntimeException(String.format("Connection to %s:%d failed: %s", hostname, port, e.getCause() != null ? e.getCause().getMessage() : e.getMessage()), e);
         }
         catch (TimeoutException e)
         {
@@ -71,6 +71,20 @@ public class RconClient implements IRconClient
         }
     }
 
+    public boolean ping()
+    {
+        try
+        {
+            final Future<RconResponse> ping = sendRaw(RCON_COMMAND, "ping", true);
+            ping.get(5000, TimeUnit.MILLISECONDS);
+            return true;
+        }
+        catch (Exception e)
+        {
+            printLog(String.format("MineCraft server is not responsive: %s", e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
+            return false;
+        }
+    }
 
     @Override
     public Future<RconResponse> sendRaw(String command)

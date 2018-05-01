@@ -57,5 +57,8 @@ public class RconApp
         rconClient.rcon().op("MrSkurk");
 
         rconClient.rcon().gameMode(GameModes.CREATIVE, "MrSkurk");
+
+        final boolean ping = rconClient.ping();
+        System.out.println(String.format("Ping: %b", ping));
     }
 }
