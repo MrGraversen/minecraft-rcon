@@ -1,12 +1,10 @@
 package io.graversen.minecraft.rcon;
 
 import io.graversen.minecraft.rcon.commands.builders.EffectCommandBuilder;
+import io.graversen.minecraft.rcon.commands.builders.GiveCommandBuilder;
 import io.graversen.minecraft.rcon.commands.builders.TellRawCommandBuilder;
 import io.graversen.minecraft.rcon.commands.builders.TitleCommandBuilder;
-import io.graversen.minecraft.rcon.commands.objects.DifficultyCommand;
-import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
-import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
-import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
+import io.graversen.minecraft.rcon.commands.objects.*;
 import io.graversen.minecraft.rcon.util.*;
 
 import java.util.List;
@@ -18,8 +16,12 @@ public class RconApp
     public static void main(String[] args) throws ExecutionException, InterruptedException
     {
         final RconClient rconClient = RconClient.connect("localhost", "abc123");
-        final Future<RconResponse> rconResponse = rconClient.sendRaw("/tellraw @a {\"keybind\":\"key.drop\"}\n");
-        final RconResponse rconResponse1 = rconResponse.get();
+
+        GiveCommandBuilder giveCommandBuilder = new GiveCommandBuilder();
+        final GiveCommand giveCommand = giveCommandBuilder.targeting(Selectors.ALL_PLAYERS).withItem("minecraft", "dirt").amount(150).build();
+        rconClient.rcon().give(giveCommand);
+
+        rconClient.rcon().time(TimeLabels.DAY);
 
         rconClient.rcon().tellRaw(new TellRawCommand(Selectors.ALL_PLAYERS.getSelectorString(), "Hallo dette er en test", Colors.DARK_PURPLE.getColorName(), false, true));
         System.out.println(rconClient.sendRaw("list").get().getResponseString());

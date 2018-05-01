@@ -16,22 +16,27 @@ public class RconClient implements IRconClient
     private static final int RCON_COMMAND = 2;
     private static final int RCON_AUTHENTICATION = 3;
 
+    private final String connectionTuple;
     private final SocketChannel rconSocketChannel;
     private final AtomicInteger currentRequestCounter;
     private final ExecutorService executorService;
     private final Rcon rcon;
 
-    private RconClient(SocketChannel rconSocketChannel)
+    private RconClient(SocketChannel rconSocketChannel, String hostname, int port)
     {
+        this.connectionTuple = String.format("%s:%d", hostname, port);
         this.rconSocketChannel = rconSocketChannel;
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
         this.rcon = new Rcon(this);
+
+        printLog(String.format("Initialized: %s", connectionTuple));
     }
 
     private Future<RconResponse> authenticateClient(String password)
     {
-        return sendRaw(RCON_AUTHENTICATION, password);
+        printLog("Authenticating");
+        return sendRaw(RCON_AUTHENTICATION, password, true);
     }
 
     public Rcon rcon()
@@ -49,7 +54,7 @@ public class RconClient implements IRconClient
         try
         {
             final SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(hostname, port));
-            final RconClient rconClient = new RconClient(socketChannel);
+            final RconClient rconClient = new RconClient(socketChannel, hostname, port);
 
             final Future<RconResponse> authenticateResponse = rconClient.authenticateClient(password);
             final RconResponse rconResponse = authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
@@ -70,18 +75,18 @@ public class RconClient implements IRconClient
     @Override
     public Future<RconResponse> sendRaw(String command)
     {
-        return sendRaw(RCON_COMMAND, command);
+        return sendRaw(RCON_COMMAND, command, false);
     }
 
-    private Future<RconResponse> sendRaw(int requestType, String command)
+    private Future<RconResponse> sendRaw(int requestType, String command, boolean silently)
     {
-        return executorService.submit(doSynchronousSend(requestType, command));
+        return executorService.submit(doSynchronousSend(requestType, command, silently));
     }
 
-    private Callable<RconResponse> doSynchronousSend(int requestType, String command)
+    private Callable<RconResponse> doSynchronousSend(int requestType, String command, boolean silently)
     {
         return () -> {
-            printCommand(command);
+            if (!silently) printCommand(command);
 
             final long requestStart = System.currentTimeMillis();
 
@@ -171,8 +176,13 @@ public class RconClient implements IRconClient
         rconSocketChannel.close();
     }
 
+    private void printLog(String logText)
+    {
+        System.out.println(String.format("[RconClient]: %s", logText));
+    }
+
     private void printCommand(String command)
     {
-        System.out.println(String.format("[RconClient]: Piping command: %s", command));
+        printLog(String.format("Piping command: %s", command));
     }
 }

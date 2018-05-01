@@ -2,6 +2,7 @@ package io.graversen.minecraft.rcon;
 
 import com.google.gson.Gson;
 import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
+import io.graversen.minecraft.rcon.commands.objects.GiveCommand;
 import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
 import io.graversen.minecraft.rcon.util.*;
@@ -11,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 public class Rcon
 {
@@ -89,6 +91,18 @@ public class Rcon
         final String command = "title";
 
         rconClient.sendRaw(String.format("%s %s %s %s", command, titleCommand.getTarget(), titleCommand.getPosition(), gson.toJson(titleCommand)));
+    }
+
+    public void give(GiveCommand giveCommand)
+    {
+        final String command = "give";
+
+        final String data = giveCommand.getData() == 0 ? "" : String.valueOf(giveCommand.getData());
+        final String dataTag = giveCommand.getDataTag() != null ? giveCommand.getDataTag() : "";
+        int giveCount = (int) Math.floor((double) giveCommand.getAmount() / 64);
+
+        IntStream.rangeClosed(1, giveCount).forEach(i -> rconClient.sendRaw(String.format("%s %s %s %d %s %s", command, giveCommand.getTarget(), giveCommand.getItem(), 64, data, dataTag).trim()));
+        if (giveCommand.getAmount() % 64 > 0) rconClient.sendRaw(String.format("%s %s %s %d %s %s", command, giveCommand.getTarget(), giveCommand.getItem(), giveCommand.getAmount() % 64, data, dataTag).trim());
     }
 
     public void whiteList(WhiteListModes whiteListMode, String playerName)
