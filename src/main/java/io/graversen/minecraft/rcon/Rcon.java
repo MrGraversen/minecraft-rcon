@@ -190,6 +190,13 @@ public class Rcon
         }
     }
 
+    public void time(TimeLabels timeLabel)
+    {
+        final String command = "time set";
+
+        rconClient.sendRaw(String.format("%s %s", command, timeLabel.getTimeString()));
+    }
+
     private String getResponseString(Future<RconResponse> responseFuture)
     {
         try
