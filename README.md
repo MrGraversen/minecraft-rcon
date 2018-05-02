@@ -20,7 +20,25 @@ Originally invented by Valve for the Source Engine, it's a TCP/IP protocol for r
 
 ## Install
 
-`// TODO: Add JitPack`
+You may use JitPack to install this from the GitHub releases.  
+Add the following to your `pom.xml` if using Maven (click the little JitPack badge for other build systems):
+
+```
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
+```
+
+```
+<dependency>
+	<groupId>com.github.MrGraversen</groupId>
+	<artifactId>minecraft-rcon</artifactId>
+	<version>LATEST</version>
+</dependency>
+```
 
 ## Configuration
 
