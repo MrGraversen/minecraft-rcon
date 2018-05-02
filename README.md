@@ -1,4 +1,6 @@
 # minecraft-rcon
+[![](https://jitpack.io/v/MrGraversen/minecraft-rcon.svg)](https://jitpack.io/#MrGraversen/minecraft-rcon)
+
 A MineCraft RCON client in Java.
 
 ## About
