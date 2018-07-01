@@ -14,7 +14,7 @@ This project will also provide some convenience code for working with the MineCr
 
 Using the convenience methods will synchronously access the RCON stack, but it is also possible to send raw, asynchronous RCON messages.
 
-**Warning:** There's a long-standing issue with MineCraft RCON which, for some reason, causes RCON commands to execute from a not-thread-safe queue (whereas the normal MineCraft action queue execute from a thread-safe queue). Sometimes when executing many commands rapidly, e.g. giving a player *many* items, the game server will throw a `java.util.ConcurrentModificationException`, which sometimes casues it to crash entirely.  
+**Warning:** There's a long-standing issue with MineCraft RCON which, for some reason, causes RCON commands to execute from a not-thread-safe queue (whereas the normal MineCraft action queue execute from a thread-safe queue) (https://bugs.mojang.com/browse/MC-72390). Sometimes when executing many commands rapidly, e.g. giving a player *many* items, the game server will throw a `java.util.ConcurrentModificationException`, which sometimes casues it to crash entirely.  
 I have, however, only seen this happening when I was really pushing it.
 
 ### What is RCON?
