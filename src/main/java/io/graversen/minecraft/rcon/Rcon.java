@@ -1,10 +1,7 @@
 package io.graversen.minecraft.rcon;
 
 import com.google.gson.Gson;
-import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
-import io.graversen.minecraft.rcon.commands.objects.GiveCommand;
-import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
-import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
+import io.graversen.minecraft.rcon.commands.objects.*;
 import io.graversen.minecraft.rcon.util.*;
 
 import java.util.ArrayList;
@@ -77,6 +74,13 @@ public class Rcon
         {
             rconClient.sendRaw(String.format("%s %s clear", command, effectCommand.getTarget()));
         }
+    }
+
+    public void playSound(PlaySoundCommand playSoundCommand) {
+        final String command = "playsound";
+        final String source = "player";
+
+        rconClient.sendRaw(String.format("%s %s %s %s", command, playSoundCommand.getSound(), source, playSoundCommand.getTarget()));
     }
 
     public void difficulty(Difficulties difficulty)
