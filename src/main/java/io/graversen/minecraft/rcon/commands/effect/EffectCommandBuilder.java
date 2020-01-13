@@ -1,8 +1,7 @@
-package io.graversen.minecraft.rcon.commands.builders;
+package io.graversen.minecraft.rcon.commands.effect;
 
-import io.graversen.minecraft.rcon.commands.builders.interfaces.ICommandBuilder;
-import io.graversen.minecraft.rcon.commands.builders.interfaces.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.commands.objects.EffectCommand;
+import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
+import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.util.Effects;
 import io.graversen.minecraft.rcon.util.Selectors;
 

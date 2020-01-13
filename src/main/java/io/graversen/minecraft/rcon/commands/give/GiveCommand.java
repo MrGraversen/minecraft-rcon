@@ -1,6 +1,6 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands.give;
 
-import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 
 public class GiveCommand extends BaseTargetedCommand {
     private final String item;

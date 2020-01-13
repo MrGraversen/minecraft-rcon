@@ -1,6 +1,8 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands;
 
-public class DifficultyCommand {
+import io.graversen.minecraft.rcon.commands.base.BaseCommand;
+
+public class DifficultyCommand extends BaseCommand {
     private final String difficulty;
 
     public DifficultyCommand(String difficulty) {

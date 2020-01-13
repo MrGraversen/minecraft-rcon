@@ -1,6 +1,6 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands.title;
 
-import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 
 public class TitleCommand extends BaseTargetedCommand {
     private transient final String position;

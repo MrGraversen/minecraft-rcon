@@ -1,12 +1,12 @@
 package io.graversen.minecraft.rcon.examples;
 
 import io.graversen.minecraft.rcon.RconClient;
-import io.graversen.minecraft.rcon.commands.builders.GiveCommandBuilder;
-import io.graversen.minecraft.rcon.commands.builders.TellRawCommandBuilder;
-import io.graversen.minecraft.rcon.commands.builders.TitleCommandBuilder;
-import io.graversen.minecraft.rcon.commands.objects.GiveCommand;
-import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
-import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
+import io.graversen.minecraft.rcon.commands.give.GiveCommandBuilder;
+import io.graversen.minecraft.rcon.commands.tellraw.TellRawCommandBuilder;
+import io.graversen.minecraft.rcon.commands.title.TitleCommandBuilder;
+import io.graversen.minecraft.rcon.commands.give.GiveCommand;
+import io.graversen.minecraft.rcon.commands.tellraw.TellRawCommand;
+import io.graversen.minecraft.rcon.commands.title.TitleCommand;
 import io.graversen.minecraft.rcon.util.*;
 
 public class TellRawAndGiveExample {

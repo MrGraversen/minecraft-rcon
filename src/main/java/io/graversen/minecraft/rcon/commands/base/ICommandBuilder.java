@@ -1,4 +1,4 @@
-package io.graversen.minecraft.rcon.commands.builders.interfaces;
+package io.graversen.minecraft.rcon.commands.base;
 
 public interface ICommandBuilder<T> {
     boolean validate();

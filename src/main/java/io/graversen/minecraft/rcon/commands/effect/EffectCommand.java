@@ -1,6 +1,6 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands.effect;
 
-import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 
 public class EffectCommand extends BaseTargetedCommand {
     private final String clear;

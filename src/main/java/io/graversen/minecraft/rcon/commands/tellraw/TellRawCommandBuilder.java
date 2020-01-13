@@ -1,10 +1,7 @@
-package io.graversen.minecraft.rcon.commands.builders;
+package io.graversen.minecraft.rcon.commands.tellraw;
 
-import io.graversen.minecraft.rcon.commands.builders.interfaces.ICommandBuilder;
-import io.graversen.minecraft.rcon.commands.builders.interfaces.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
-import io.graversen.minecraft.rcon.commands.objects.common.ClickEvent;
-import io.graversen.minecraft.rcon.commands.objects.common.HoverEvent;
+import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
+import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.util.ClickEventActions;
 import io.graversen.minecraft.rcon.util.Colors;
 import io.graversen.minecraft.rcon.util.HoverEventActions;

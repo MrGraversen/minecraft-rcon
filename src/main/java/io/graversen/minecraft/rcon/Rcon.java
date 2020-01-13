@@ -1,7 +1,11 @@
 package io.graversen.minecraft.rcon;
 
 import com.google.gson.Gson;
-import io.graversen.minecraft.rcon.commands.objects.*;
+import io.graversen.minecraft.rcon.commands.PlaySoundCommand;
+import io.graversen.minecraft.rcon.commands.effect.EffectCommand;
+import io.graversen.minecraft.rcon.commands.give.GiveCommand;
+import io.graversen.minecraft.rcon.commands.tellraw.TellRawCommand;
+import io.graversen.minecraft.rcon.commands.title.TitleCommand;
 import io.graversen.minecraft.rcon.util.*;
 
 import java.util.ArrayList;

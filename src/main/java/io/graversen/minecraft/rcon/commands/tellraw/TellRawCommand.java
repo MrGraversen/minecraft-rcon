@@ -1,8 +1,6 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands.tellraw;
 
-import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
-import io.graversen.minecraft.rcon.commands.objects.common.ClickEvent;
-import io.graversen.minecraft.rcon.commands.objects.common.HoverEvent;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 
 public class TellRawCommand extends BaseTargetedCommand {
     private final String text;

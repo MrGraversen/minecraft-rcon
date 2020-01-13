@@ -1,6 +1,6 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands;
 
-import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 
 public class PlaySoundCommand extends BaseTargetedCommand {
     private final String sound;

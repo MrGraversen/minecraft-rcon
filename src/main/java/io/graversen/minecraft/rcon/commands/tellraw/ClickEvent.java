@@ -1,4 +1,4 @@
-package io.graversen.minecraft.rcon.commands.objects.common;
+package io.graversen.minecraft.rcon.commands.tellraw;
 
 public class ClickEvent {
     private final String action;

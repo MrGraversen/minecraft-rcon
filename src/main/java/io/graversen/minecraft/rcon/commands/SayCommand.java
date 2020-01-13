@@ -1,6 +1,8 @@
-package io.graversen.minecraft.rcon.commands.objects;
+package io.graversen.minecraft.rcon.commands;
 
-public class SayCommand {
+import io.graversen.minecraft.rcon.commands.base.BaseCommand;
+
+public class SayCommand extends BaseCommand {
     private final String text;
 
     public SayCommand(String text) {
