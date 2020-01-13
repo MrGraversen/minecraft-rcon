@@ -2,16 +2,14 @@ package io.graversen.minecraft.rcon.commands.objects;
 
 import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
 
-public class EffectCommand extends BaseTargetedCommand
-{
+public class EffectCommand extends BaseTargetedCommand {
     private final String clear;
     private final String effect;
     private final int seconds;
     private final int amplifier;
     private final boolean hideParticles;
 
-    public EffectCommand(String target, String clear, String effect, int seconds, int amplifier, boolean hideParticles)
-    {
+    public EffectCommand(String target, String clear, String effect, int seconds, int amplifier, boolean hideParticles) {
         super(target);
         this.clear = clear;
         this.effect = effect;
@@ -20,28 +18,23 @@ public class EffectCommand extends BaseTargetedCommand
         this.hideParticles = hideParticles;
     }
 
-    public String getClear()
-    {
+    public String getClear() {
         return clear;
     }
 
-    public String getEffect()
-    {
+    public String getEffect() {
         return effect;
     }
 
-    public int getSeconds()
-    {
+    public int getSeconds() {
         return seconds;
     }
 
-    public int getAmplifier()
-    {
+    public int getAmplifier() {
         return amplifier;
     }
 
-    public boolean isHideParticles()
-    {
+    public boolean isHideParticles() {
         return hideParticles;
     }
 }

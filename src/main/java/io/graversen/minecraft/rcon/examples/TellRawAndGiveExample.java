@@ -9,10 +9,8 @@ import io.graversen.minecraft.rcon.commands.objects.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.objects.TitleCommand;
 import io.graversen.minecraft.rcon.util.*;
 
-public class TellRawAndGiveExample
-{
-    public static void main(String[] args)
-    {
+public class TellRawAndGiveExample {
+    public static void main(String[] args) {
         // Prepare the builders
         final TellRawCommandBuilder tellRawCommandBuilder = new TellRawCommandBuilder();
         final TitleCommandBuilder titleCommandBuilder = new TitleCommandBuilder();

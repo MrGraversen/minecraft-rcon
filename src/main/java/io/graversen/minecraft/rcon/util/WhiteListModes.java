@@ -1,7 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum WhiteListModes
-{
+public enum WhiteListModes {
     ADD,
     LIST,
     OFF,
@@ -9,8 +8,7 @@ public enum WhiteListModes
     RELOAD,
     REMOVE;
 
-    public String getModeName()
-    {
+    public String getModeName() {
         return name().toLowerCase();
     }
 }

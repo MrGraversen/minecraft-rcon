@@ -1,7 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Effects
-{
+public enum Effects {
     ABSORPTION,
     UNLUCK,
     BLINDNESS,
@@ -26,8 +25,7 @@ public enum Effects
     WATER_BREATHING,
     WITHER;
 
-    public String getEffectName()
-    {
+    public String getEffectName() {
         return String.format("minecraft:%s", name().toLowerCase());
     }
 }

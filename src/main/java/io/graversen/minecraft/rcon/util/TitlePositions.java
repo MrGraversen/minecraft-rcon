@@ -1,13 +1,11 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum TitlePositions
-{
+public enum TitlePositions {
     TITLE,
     SUBTITLE,
     ACTIONBAR;
 
-    public String getTitlePositionValue()
-    {
+    public String getTitlePositionValue() {
         return name().toLowerCase();
     }
 }

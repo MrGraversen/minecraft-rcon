@@ -1,7 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Colors
-{
+public enum Colors {
     BLACK,
     DARK_BLUE,
     DARK_GREEN,
@@ -19,8 +18,7 @@ public enum Colors
     YELLOW,
     WHITE;
 
-    public String getColorName()
-    {
+    public String getColorName() {
         return name().toLowerCase();
     }
 }

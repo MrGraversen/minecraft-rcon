@@ -1,7 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Keys
-{
+public enum Keys {
     FORWARD,
     LEFT,
     BACK,
@@ -25,8 +24,7 @@ public enum Keys
     HOTBAR_8,
     HOTBAR_9;
 
-    public String getKeyCode()
-    {
+    public String getKeyCode() {
         return String.format("key.%s", name().toLowerCase().replaceAll("_", "."));
     }
 }

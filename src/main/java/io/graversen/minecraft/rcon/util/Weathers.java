@@ -1,13 +1,11 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Weathers
-{
+public enum Weathers {
     CLEAR,
     RAIN,
     THUNDER;
 
-    public String getWeatherString()
-    {
+    public String getWeatherString() {
         return name().toLowerCase();
     }
 }

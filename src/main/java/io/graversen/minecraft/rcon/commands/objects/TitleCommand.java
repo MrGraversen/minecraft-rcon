@@ -2,8 +2,7 @@ package io.graversen.minecraft.rcon.commands.objects;
 
 import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
 
-public class TitleCommand extends BaseTargetedCommand
-{
+public class TitleCommand extends BaseTargetedCommand {
     private transient final String position;
     private final String text;
     private final boolean bold;
@@ -13,8 +12,7 @@ public class TitleCommand extends BaseTargetedCommand
     private final boolean obfuscated;
     private final String color;
 
-    public TitleCommand(String target, String text, String position, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color)
-    {
+    public TitleCommand(String target, String text, String position, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color) {
         super(target);
         this.text = text;
         this.position = position;
@@ -26,43 +24,35 @@ public class TitleCommand extends BaseTargetedCommand
         this.color = color;
     }
 
-    public String getText()
-    {
+    public String getText() {
         return text;
     }
 
-    public String getPosition()
-    {
+    public String getPosition() {
         return position;
     }
 
-    public boolean isBold()
-    {
+    public boolean isBold() {
         return bold;
     }
 
-    public boolean isItalic()
-    {
+    public boolean isItalic() {
         return italic;
     }
 
-    public boolean isUnderlined()
-    {
+    public boolean isUnderlined() {
         return underlined;
     }
 
-    public boolean isStriketrough()
-    {
+    public boolean isStriketrough() {
         return striketrough;
     }
 
-    public boolean isObfuscated()
-    {
+    public boolean isObfuscated() {
         return obfuscated;
     }
 
-    public String getColor()
-    {
+    public String getColor() {
         return color;
     }
 }

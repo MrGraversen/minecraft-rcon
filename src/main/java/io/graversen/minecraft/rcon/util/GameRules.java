@@ -2,8 +2,7 @@ package io.graversen.minecraft.rcon.util;
 
 import com.google.common.base.CaseFormat;
 
-public enum GameRules
-{
+public enum GameRules {
     ANNOUNCE_ADVANCEMENTS,
     COMMAND_BLOCK_OUTPUT,
     DISABLE_ELYTRA_MOVEMENT_CHECK,
@@ -28,8 +27,7 @@ public enum GameRules
     SPAWN_RADIUS,
     SPECTATORS_GENERATE_CHUNKS;
 
-    public String getGameRuleName()
-    {
+    public String getGameRuleName() {
         return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name());
     }
 }

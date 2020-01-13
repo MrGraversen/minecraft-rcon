@@ -4,8 +4,7 @@ import io.graversen.minecraft.rcon.commands.objects.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.commands.objects.common.ClickEvent;
 import io.graversen.minecraft.rcon.commands.objects.common.HoverEvent;
 
-public class TellRawCommand extends BaseTargetedCommand
-{
+public class TellRawCommand extends BaseTargetedCommand {
     private final String text;
     private final boolean bold;
     private final boolean italic;
@@ -17,8 +16,7 @@ public class TellRawCommand extends BaseTargetedCommand
     private final HoverEvent hoverEvent;
     private final TellRawCommand[] extra;
 
-    public TellRawCommand(String target, String text, boolean bold, boolean italic)
-    {
+    public TellRawCommand(String target, String text, boolean bold, boolean italic) {
         super(target);
         this.text = text;
         this.bold = bold;
@@ -32,8 +30,7 @@ public class TellRawCommand extends BaseTargetedCommand
         this.extra = null;
     }
 
-    public TellRawCommand(String target, String text, String color, boolean bold, boolean italic)
-    {
+    public TellRawCommand(String target, String text, String color, boolean bold, boolean italic) {
         super(target);
         this.text = text;
         this.bold = bold;
@@ -47,8 +44,7 @@ public class TellRawCommand extends BaseTargetedCommand
         this.extra = null;
     }
 
-    public TellRawCommand(String target, String text, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color, ClickEvent clickEvent, HoverEvent hoverEvent, TellRawCommand[] extra)
-    {
+    public TellRawCommand(String target, String text, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color, ClickEvent clickEvent, HoverEvent hoverEvent, TellRawCommand[] extra) {
         super(target);
         this.text = text;
         this.bold = bold;
