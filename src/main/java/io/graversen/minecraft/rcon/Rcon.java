@@ -54,20 +54,6 @@ public class Rcon {
 
     }
 
-    public void effect(EffectCommand effectCommand) {
-        final String command = "effect";
-
-        if (effectCommand.getClear().isEmpty()) {
-            String partialCommand = String.format("%s %s %s %d", command, effectCommand.getTarget(), effectCommand.getEffect(), effectCommand.getSeconds());
-            if (effectCommand.getAmplifier() > 0) partialCommand = partialCommand + String.format(" %d", effectCommand.getAmplifier());
-            if (effectCommand.isHideParticles()) partialCommand = partialCommand + " true";
-
-            rconClient.sendRaw(partialCommand);
-        } else {
-            rconClient.sendRaw(String.format("%s %s clear", command, effectCommand.getTarget()));
-        }
-    }
-
     public void playSound(PlaySoundCommand playSoundCommand) {
         final String command = "playsound";
         final String source = "player";
@@ -85,45 +71,6 @@ public class Rcon {
         final String command = "title";
 
         rconClient.sendRaw(String.format("%s %s %s %s", command, titleCommand.getTarget(), titleCommand.getPosition(), gson.toJson(titleCommand)));
-    }
-
-    public void give(GiveCommand giveCommand) {
-        final String command = "give";
-
-        final String data = giveCommand.getData() == 0 ? "" : String.valueOf(giveCommand.getData());
-        final String dataTag = giveCommand.getDataTag() != null ? giveCommand.getDataTag() : "";
-        int giveCount = (int) Math.floor((double) giveCommand.getAmount() / 64);
-
-        IntStream.rangeClosed(1, giveCount).forEach(i -> rconClient.sendRaw(String.format("%s %s %s %d %s %s", command, giveCommand.getTarget(), giveCommand.getItem(), 64, data, dataTag).trim()));
-        if (giveCommand.getAmount() % 64 > 0)
-            rconClient.sendRaw(String.format("%s %s %s %d %s %s", command, giveCommand.getTarget(), giveCommand.getItem(), giveCommand.getAmount() % 64, data, dataTag).trim());
-    }
-
-    public void whiteList(WhiteListModes whiteListMode, String playerName) {
-        final String command = "whitelist";
-
-        switch (whiteListMode) {
-            case ADD:
-            case REMOVE:
-                rconClient.sendRaw(String.format("%s %s %s", command, whiteListMode.getModeName(), playerName));
-                break;
-            case LIST:
-            case OFF:
-            case ON:
-            case RELOAD:
-                rconClient.sendRaw(String.format("%s %s", command, whiteListMode.getModeName()));
-                break;
-        }
-    }
-
-    public void gameMode(GameModes gameMode, String playerName) {
-        final String command = "gamemode";
-
-        if (playerName == null) {
-            rconClient.sendRaw(String.format("%s %s", command, gameMode.getGameModeString()));
-        } else {
-            rconClient.sendRaw(String.format("%s %s %s", command, gameMode.getGameModeString(), playerName));
-        }
     }
 
     public String seed() {

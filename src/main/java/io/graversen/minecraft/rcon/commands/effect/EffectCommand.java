@@ -37,4 +37,17 @@ public class EffectCommand extends BaseTargetedCommand {
     public boolean isHideParticles() {
         return hideParticles;
     }
+
+    @Override
+    public String toCommandString() {
+        if (getClear().isEmpty()) {
+            String partialCommand = String.format("effect %s %s %d", getTarget(), getEffect(), getSeconds());
+            if (getAmplifier() > 0) partialCommand = partialCommand + String.format(" %d", getAmplifier());
+            if (isHideParticles()) partialCommand = partialCommand + " true";
+
+            return partialCommand;
+        } else {
+            return String.format("effect %s clear", getTarget());
+        }
+    }
 }

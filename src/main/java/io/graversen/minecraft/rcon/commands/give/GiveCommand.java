@@ -31,4 +31,12 @@ public class GiveCommand extends BaseTargetedCommand {
     public String getDataTag() {
         return dataTag;
     }
+
+    @Override
+    public String toCommandString() {
+        final String data = getData() == 0 ? "" : String.valueOf(getData());
+        final String dataTag = getDataTag() != null ? getDataTag() : "";
+
+        return String.format("give %s %s %d %s %s", getTarget(), getItem(), getAmount(), data, dataTag);
+    }
 }
