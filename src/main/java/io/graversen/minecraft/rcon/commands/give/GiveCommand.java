@@ -1,42 +1,44 @@
 package io.graversen.minecraft.rcon.commands.give;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import org.apache.commons.text.StringSubstitutor;
+
+import java.util.Map;
+import java.util.Objects;
 
 public class GiveCommand extends BaseTargetedCommand {
     private final String item;
-    private final int amount;
-    private final int data;
-    private final String dataTag;
+    private final String nbt;
+    private final int count;
 
-    public GiveCommand(String target, String item, int amount, int data, String dataTag) {
+    public GiveCommand(String target, String item, String nbt, int count) {
         super(target);
-        this.item = item;
-        this.amount = amount;
-        this.data = data;
-        this.dataTag = dataTag;
+        this.item = Objects.requireNonNull(item);
+        this.nbt = Objects.requireNonNullElse(nbt, "");
+        this.count = count;
     }
 
     public String getItem() {
         return item;
     }
 
-    public int getAmount() {
-        return amount;
+    public String getNbt() {
+        return nbt;
     }
 
-    public int getData() {
-        return data;
-    }
-
-    public String getDataTag() {
-        return dataTag;
+    public int getCount() {
+        return count;
     }
 
     @Override
-    public String toCommandString() {
-        final String data = getData() == 0 ? "" : String.valueOf(getData());
-        final String dataTag = getDataTag() != null ? getDataTag() : "";
+    public String command() {
+        final var variables = Map.of(
+                "target", getTarget(),
+                "item", getItem(),
+                "nbt", getNbt(),
+                "count", getCount()
+        );
 
-        return String.format("give %s %s %d %s %s", getTarget(), getItem(), getAmount(), data, dataTag);
+        return StringSubstitutor.replace("give ${target} ${item}${nbt} ${count}", variables);
     }
 }

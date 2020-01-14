@@ -6,25 +6,25 @@ import org.apache.commons.text.StringSubstitutor;
 import java.util.Map;
 import java.util.Objects;
 
-public class PlaySoundCommand extends BaseTargetedCommand {
-    private final String sound;
+public class BanCommand extends BaseTargetedCommand {
+    private final String reason;
 
-    public PlaySoundCommand(String target, String sound) {
+    public BanCommand(String target, String reason) {
         super(target);
-        this.sound = Objects.requireNonNull(sound);
+        this.reason = Objects.requireNonNullElse(reason, "Banned");
     }
 
-    public String getSound() {
-        return sound;
+    public String getReason() {
+        return reason;
     }
 
     @Override
     public String command() {
         return StringSubstitutor.replace(
-                "playsound ${sound} master ${target}",
+                "ban ${target} ${reason}",
                 Map.of(
-                        "sound", getSound(),
-                        "target", getTarget()
+                        "target", getTarget(),
+                        "reason", getReason()
                 )
         );
     }

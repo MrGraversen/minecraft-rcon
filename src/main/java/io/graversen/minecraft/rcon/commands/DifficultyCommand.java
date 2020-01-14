@@ -1,8 +1,11 @@
 package io.graversen.minecraft.rcon.commands;
 
-import io.graversen.minecraft.rcon.commands.base.BaseCommand;
+import io.graversen.minecraft.rcon.commands.base.ICommand;
+import org.apache.commons.text.StringSubstitutor;
 
-public class DifficultyCommand extends BaseCommand {
+import java.util.Map;
+
+public class DifficultyCommand implements ICommand {
     private final String difficulty;
 
     public DifficultyCommand(String difficulty) {
@@ -11,5 +14,10 @@ public class DifficultyCommand extends BaseCommand {
 
     public String getDifficulty() {
         return difficulty;
+    }
+
+    @Override
+    public String command() {
+        return StringSubstitutor.replace("difficulty ${difficulty}", Map.of("difficulty", getDifficulty()));
     }
 }

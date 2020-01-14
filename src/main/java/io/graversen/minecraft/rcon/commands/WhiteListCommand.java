@@ -1,36 +1,40 @@
 package io.graversen.minecraft.rcon.commands;
 
-import io.graversen.minecraft.rcon.commands.base.BaseCommand;
+import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.WhiteListModes;
+import org.apache.commons.text.StringSubstitutor;
 
-public class WhiteListCommand extends BaseCommand {
+import java.util.Map;
+
+public class WhiteListCommand extends BaseTargetedCommand {
     private final WhiteListModes whiteListMode;
-    private final String playerName;
 
-    public WhiteListCommand(WhiteListModes whiteListMode, String playerName) {
+    public WhiteListCommand(WhiteListModes whiteListMode, String target) {
+        super(target);
         this.whiteListMode = whiteListMode;
-        this.playerName = playerName;
     }
 
     public WhiteListModes getWhiteListMode() {
         return whiteListMode;
     }
 
-    public String getPlayerName() {
-        return playerName;
-    }
-
     @Override
-    public String toCommandString() {
+    public String command() {
         switch (getWhiteListMode()) {
             case ADD:
             case REMOVE:
-                return String.format("whitelist %s %s", getWhiteListMode().getModeName(), getPlayerName());
+                return StringSubstitutor.replace(
+                        "whitelist ${mode} ${target}",
+                        Map.of(
+                                "mode", getWhiteListMode().getModeName(),
+                                "target", getTarget()
+                        )
+                );
             case LIST:
             case OFF:
             case ON:
             case RELOAD:
-                return String.format("whitelist %s", getWhiteListMode().getModeName());
+                return "whitelist " + getWhiteListMode().getModeName();
             default:
                 throw new UnsupportedOperationException("Unsupported whitelist mode: " + getWhiteListMode());
         }

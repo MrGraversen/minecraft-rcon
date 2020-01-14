@@ -2,7 +2,7 @@ package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseCommand;
 
-public class SayCommand extends BaseCommand {
+public class SayCommand implements ICommand {
     private final String text;
 
     public SayCommand(String text) {
@@ -11,5 +11,9 @@ public class SayCommand extends BaseCommand {
 
     public String getText() {
         return text;
+    }
+
+    public String command() {
+        return "say " + getText();
     }
 }
