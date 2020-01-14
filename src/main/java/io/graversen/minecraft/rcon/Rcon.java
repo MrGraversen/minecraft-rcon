@@ -18,18 +18,12 @@ import java.util.stream.IntStream;
 public class Rcon {
     private final static int DEFAULT_TIMEOUT = 5000;
 
-    private final GameRuleWrapper gameRuleWrapper;
     private final Gson gson;
     private final IRconClient rconClient;
 
     public Rcon(IRconClient rconClient) {
-        this.gameRuleWrapper = new GameRuleWrapper();
         this.gson = new Gson();
         this.rconClient = rconClient;
-    }
-
-    public GameRuleWrapper gameRules() {
-        return gameRuleWrapper;
     }
 
     // TODO
@@ -61,31 +55,6 @@ public class Rcon {
             return responseFuture.get(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS).getResponseString();
         } catch (Exception e) {
             throw new RuntimeException("Unable to complete RCON command execution", e);
-        }
-    }
-
-    public class GameRuleWrapper {
-        private final String command = "gamerule";
-
-        private GameRuleWrapper() {
-
-        }
-
-        public void setGameRule(GameRules gameRule, boolean value) {
-            doSetGameRule(gameRule.getGameRuleName(), String.valueOf(value));
-        }
-
-        public void setGameRule(GameRules gameRule, int value) {
-            doSetGameRule(gameRule.getGameRuleName(), String.valueOf(value));
-        }
-
-        public String getGameRule(GameRules gameRule) {
-            final Future<RconResponse> responseFuture = rconClient.sendRaw(String.format("%s %s", command, gameRule.getGameRuleName()));
-            return getResponseString(responseFuture);
-        }
-
-        private void doSetGameRule(String gameRule, String value) {
-            rconClient.sendRaw(String.format("%s %s %s", command, gameRule, value));
         }
     }
 }
