@@ -73,12 +73,12 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     }
 
     public TellRawCommandBuilder withClickEvent(ClickEventActions clickEventAction, String value) {
-        this.clickEvent = new ClickEvent(clickEventAction.name(), value);
+        this.clickEvent = new ClickEvent(clickEventAction.name().toLowerCase(), value);
         return this;
     }
 
     public TellRawCommandBuilder withHoverEvent(HoverEventActions hoverEventAction, String value) {
-        this.hoverEvent = new HoverEvent(hoverEventAction.name(), value);
+        this.hoverEvent = new HoverEvent(hoverEventAction.name().toLowerCase(), value);
         return this;
     }
 
