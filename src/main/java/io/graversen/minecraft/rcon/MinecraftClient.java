@@ -11,8 +11,8 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RconClient implements IRconClient {
-    private static Logger LOG = LoggerFactory.getLogger(RconClient.class);
+public class MinecraftClient implements IMinecraftClient {
+    private static Logger LOG = LoggerFactory.getLogger(MinecraftClient.class);
     private static final int DEFAULT_PORT = 25575;
     private static final int RCON_AUTHENTICATION_FAILURE = -1;
     private static final int RCON_COMMAND = 2;
@@ -22,14 +22,12 @@ public class RconClient implements IRconClient {
     private final SocketChannel rconSocketChannel;
     private final AtomicInteger currentRequestCounter;
     private final ExecutorService executorService;
-    private final Rcon rcon;
 
-    private RconClient(SocketChannel rconSocketChannel, String hostname, int port) {
+    private MinecraftClient(SocketChannel rconSocketChannel, String hostname, int port) {
         this.connectionTuple = String.format("%s:%d", hostname, port);
         this.rconSocketChannel = rconSocketChannel;
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
-        this.rcon = new Rcon(this);
         LOG.info("Initialized with connection tuple '{}'", connectionTuple);
     }
 
@@ -38,18 +36,14 @@ public class RconClient implements IRconClient {
         return sendRaw(RCON_AUTHENTICATION, password, true);
     }
 
-    public Rcon rcon() {
-        return rcon;
+    public static MinecraftClient connect(String hostname, String password) {
+        return MinecraftClient.connect(hostname, password, MinecraftClient.DEFAULT_PORT);
     }
 
-    public static RconClient connect(String hostname, String password) {
-        return RconClient.connect(hostname, password, RconClient.DEFAULT_PORT);
-    }
-
-    public static RconClient connect(String hostname, String password, int port) {
+    public static MinecraftClient connect(String hostname, String password, int port) {
         try {
             final SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(hostname, port));
-            final RconClient rconClient = new RconClient(socketChannel, hostname, port);
+            final MinecraftClient rconClient = new MinecraftClient(socketChannel, hostname, port);
 
             final Future<RconResponse> authenticateResponse = rconClient.authenticateClient(password);
             final RconResponse rconResponse = authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
@@ -61,17 +55,6 @@ public class RconClient implements IRconClient {
             );
         } catch (TimeoutException e) {
             throw new RconConnectException(e, "Connection to %s:%d timed out", hostname, port);
-        }
-    }
-
-    public boolean ping() {
-        try {
-            final Future<RconResponse> ping = sendRaw(RCON_COMMAND, "ping", true);
-            ping.get(5000, TimeUnit.MILLISECONDS);
-            return true;
-        } catch (Exception e) {
-            LOG.error("Minecraft server is not responsive", e);
-            return false;
         }
     }
 

@@ -5,7 +5,7 @@ import io.graversen.minecraft.rcon.query.IRconResponseMapper;
 
 import java.util.concurrent.Future;
 
-public interface IRcon {
+public interface IMinecraftRcon {
     RconResponse sendSync(ICommand command);
 
     Future<RconResponse> sendAsync(ICommand command);

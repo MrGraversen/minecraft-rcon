@@ -7,12 +7,12 @@ import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-public class Rcon implements IRcon {
+public class MinecraftRcon implements IMinecraftRcon {
     static final int DEFAULT_TIMEOUT = 5000;
 
-    private final IRconClient rconClient;
+    private final IMinecraftClient rconClient;
 
-    public Rcon(IRconClient rconClient) {
+    public MinecraftRcon(IMinecraftClient rconClient) {
         this.rconClient = Objects.requireNonNull(rconClient);
     }
 
