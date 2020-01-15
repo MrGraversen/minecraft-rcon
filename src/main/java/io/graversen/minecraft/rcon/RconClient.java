@@ -1,5 +1,8 @@
 package io.graversen.minecraft.rcon;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -9,8 +12,8 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class RconClient implements IRconClient {
+    private static Logger LOG = LoggerFactory.getLogger(RconClient.class);
     private static final int DEFAULT_PORT = 25575;
-
     private static final int RCON_AUTHENTICATION_FAILURE = -1;
     private static final int RCON_COMMAND = 2;
     private static final int RCON_AUTHENTICATION = 3;
@@ -27,12 +30,11 @@ public class RconClient implements IRconClient {
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
         this.rcon = new Rcon(this);
-
-        printLog(String.format("Initialized: %s", connectionTuple));
+        LOG.info("Initialized with connection tuple '{}'", connectionTuple);
     }
 
     private Future<RconResponse> authenticateClient(String password) {
-        printLog("Authenticating");
+        LOG.info("Authenticating...");
         return sendRaw(RCON_AUTHENTICATION, password, true);
     }
 
@@ -68,7 +70,7 @@ public class RconClient implements IRconClient {
             ping.get(5000, TimeUnit.MILLISECONDS);
             return true;
         } catch (Exception e) {
-            printLog(String.format("MineCraft server is not responsive: %s", e.getCause() != null ? e.getCause().getMessage() : e.getMessage()));
+            LOG.error("Minecraft server is not responsive", e);
             return false;
         }
     }
@@ -164,11 +166,7 @@ public class RconClient implements IRconClient {
         rconSocketChannel.close();
     }
 
-    private void printLog(String logText) {
-        System.out.println(String.format("[RconClient]: %s", logText));
-    }
-
-    private void printCommand(String command) {
-        printLog(String.format("Piping command: %s", command));
+    private void printCommand(String rawCommand) {
+        LOG.info("Sending command: {}", rawCommand);
     }
 }
