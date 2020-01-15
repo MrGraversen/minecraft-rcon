@@ -1,4 +1,4 @@
-package io.graversen.minecraft.rcon.commands.give;
+package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import org.apache.commons.text.StringSubstitutor;
