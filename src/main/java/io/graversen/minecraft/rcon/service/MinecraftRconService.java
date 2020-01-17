@@ -1,6 +1,7 @@
 package io.graversen.minecraft.rcon.service;
 
 import io.graversen.minecraft.rcon.IMinecraftClient;
+import io.graversen.minecraft.rcon.MinecraftRcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,20 +11,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class MinecraftClientService implements IMinecraftClientService {
-    private static Logger LOG = LoggerFactory.getLogger(MinecraftClientService.class);
+public class MinecraftRconService implements IMinecraftRconService {
+    private static Logger LOG = LoggerFactory.getLogger(MinecraftRconService.class);
 
     private final RconDetails rconDetails;
     private final ConnectOptions connectOptions;
     private final ScheduledExecutorService executorService;
 
-    private IMinecraftClient minecraftClient;
+    private volatile IMinecraftClient minecraftClient;
+    private volatile MinecraftRcon minecraftRcon;
 
     private volatile boolean shouldClose;
     private volatile boolean shouldConnect;
     private volatile boolean isConnected;
 
-    public MinecraftClientService(RconDetails rconDetails, ConnectOptions connectOptions) {
+    public MinecraftRconService(RconDetails rconDetails, ConnectOptions connectOptions) {
         this.rconDetails = rconDetails;
         this.connectOptions = connectOptions;
         this.executorService = Executors.newScheduledThreadPool(2);
@@ -50,8 +52,8 @@ public class MinecraftClientService implements IMinecraftClientService {
     }
 
     @Override
-    public Optional<IMinecraftClient> minecraftClient() {
-        return Optional.ofNullable(minecraftClient);
+    public Optional<MinecraftRcon> minecraftRcon() {
+        return Optional.ofNullable(minecraftRcon);
     }
 
     private void safeClose(String reason) {
@@ -85,9 +87,10 @@ public class MinecraftClientService implements IMinecraftClientService {
             public void onPingResult(PingResult pingResult) {
                 if (!pingResult.isSuccess() && shouldConnect) {
                     if (isConnected) {
+                        LOG.warn("Connection broken - resetting");
                         isConnected = false;
                         minecraftClient = null;
-                        LOG.warn("Connection broken - reconnecting");
+                        minecraftRcon = null;
                     }
                     doConnect();
                 }
@@ -98,6 +101,7 @@ public class MinecraftClientService implements IMinecraftClientService {
     private void doConnect() {
         try {
             minecraftClient = executorService.submit(new ConnectTask(connectOptions, rconDetails)).get();
+            minecraftRcon = new MinecraftRcon(minecraftClient);
             isConnected = true;
         } catch (Exception e) {
             safeClose(e.getMessage());

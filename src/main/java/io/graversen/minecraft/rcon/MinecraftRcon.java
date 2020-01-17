@@ -8,8 +8,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class MinecraftRcon implements IMinecraftRcon {
-    static final int DEFAULT_TIMEOUT = 5000;
-
     private final IMinecraftClient rconClient;
 
     public MinecraftRcon(IMinecraftClient rconClient) {
@@ -21,7 +19,7 @@ public class MinecraftRcon implements IMinecraftRcon {
         final var responseFuture = sendAsync(command);
 
         try {
-            return responseFuture.get(DEFAULT_TIMEOUT, TimeUnit.MILLISECONDS);
+            return responseFuture.get(Defaults.RCON_TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
         } catch (Exception e) {
             throw new RconCommandException(e, "Failed to receive response to command");
         }

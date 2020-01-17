@@ -1,15 +1,15 @@
 package io.graversen.minecraft.rcon.service;
 
-import io.graversen.minecraft.rcon.IMinecraftClient;
+import io.graversen.minecraft.rcon.MinecraftRcon;
 
 import java.util.Optional;
 
-public interface IMinecraftClientService {
+public interface IMinecraftRconService {
     void connect();
 
     void disconnect();
 
     boolean isConnected();
 
-    Optional<IMinecraftClient> minecraftClient();
+    Optional<MinecraftRcon> minecraftRcon();
 }
