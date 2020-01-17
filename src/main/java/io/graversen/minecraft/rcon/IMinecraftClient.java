@@ -8,4 +8,6 @@ public interface IMinecraftClient extends Closeable {
     boolean isConnected(Duration timeout);
 
     Future<RconResponse> sendRaw(String command);
+
+    Future<RconResponse> sendRawSilently(String command);
 }

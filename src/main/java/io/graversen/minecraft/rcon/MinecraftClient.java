@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MinecraftClient implements IMinecraftClient {
     private static Logger LOG = LoggerFactory.getLogger(MinecraftClient.class);
-    private static final int DEFAULT_PORT = 25575;
     private static final int RCON_AUTHENTICATION_FAILURE = -1;
     private static final int RCON_COMMAND = 2;
     private static final int RCON_AUTHENTICATION = 3;
@@ -35,29 +34,29 @@ public class MinecraftClient implements IMinecraftClient {
         LOG.info("Initialized with connection tuple '{}'", connectionTuple);
     }
 
-    private Future<RconResponse> authenticateClient(String password) {
-        LOG.info("Authenticating...");
-        return sendRaw(RCON_AUTHENTICATION, password, true);
-    }
-
-    public static MinecraftClient connect(String hostname, String password) {
-        return MinecraftClient.connect(hostname, password, MinecraftClient.DEFAULT_PORT);
-    }
+//    public static MinecraftClient connect(String hostname, String password) {
+//        return MinecraftClient.connect(hostname, password, MinecraftClient.DEFAULT_PORT);
+//    }
 
     public static MinecraftClient connect(String hostname, String password, int port) {
+        MinecraftClient minecraftClient = null;
+
         try {
             final SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress(hostname, port));
-            final MinecraftClient rconClient = new MinecraftClient(socketChannel, hostname, port);
+            minecraftClient = new MinecraftClient(socketChannel, hostname, port);
 
-            final Future<RconResponse> authenticateResponse = rconClient.authenticateClient(password);
+            final Future<RconResponse> authenticateResponse = minecraftClient.authenticateClient(password);
             final RconResponse rconResponse = authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
 
-            return rconClient;
+            LOG.info("Connection success!");
+            return minecraftClient;
         } catch (IOException | InterruptedException | ExecutionException e) {
+            if (minecraftClient != null) minecraftClient.safeClose();
             throw new RconConnectException(
                     e, "Connection to %s:%d failed: %s", hostname, port, e.getCause() != null ? e.getCause().getMessage() : e.getMessage()
             );
         } catch (TimeoutException e) {
+            if (minecraftClient != null) minecraftClient.safeClose();
             throw new RconConnectException(e, "Connection to %s:%d timed out", hostname, port);
         }
     }
@@ -65,7 +64,7 @@ public class MinecraftClient implements IMinecraftClient {
     @Override
     public boolean isConnected(Duration timeout) {
         try {
-            sendRaw("ping").get(timeout.toSeconds(), TimeUnit.SECONDS);
+            sendRawSilently("ping").get(timeout.toSeconds(), TimeUnit.SECONDS);
             return true;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             LOG.error("Lost connection to {}", connectionTuple);
@@ -77,6 +76,11 @@ public class MinecraftClient implements IMinecraftClient {
     @Override
     public Future<RconResponse> sendRaw(String command) {
         return sendRaw(RCON_COMMAND, command, false);
+    }
+
+    @Override
+    public Future<RconResponse> sendRawSilently(String command) {
+        return sendRaw(RCON_COMMAND, command, true);
     }
 
     private Future<RconResponse> sendRaw(int requestType, String command, boolean silently) {
@@ -178,7 +182,12 @@ public class MinecraftClient implements IMinecraftClient {
         }
     }
 
+    private Future<RconResponse> authenticateClient(String password) {
+        LOG.debug("Authenticating...");
+        return sendRaw(RCON_AUTHENTICATION, password, true);
+    }
+
     private void printCommand(String rawCommand) {
-        LOG.info("Sending command: {}", rawCommand);
+        LOG.debug("Sending command: {}", rawCommand);
     }
 }
