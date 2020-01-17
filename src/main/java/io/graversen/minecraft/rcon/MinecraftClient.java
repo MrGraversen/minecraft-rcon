@@ -8,6 +8,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
+import java.time.Duration;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,11 +24,14 @@ public class MinecraftClient implements IMinecraftClient {
     private final AtomicInteger currentRequestCounter;
     private final ExecutorService executorService;
 
+    private volatile boolean isConnected;
+
     private MinecraftClient(SocketChannel rconSocketChannel, String hostname, int port) {
         this.connectionTuple = String.format("%s:%d", hostname, port);
         this.rconSocketChannel = rconSocketChannel;
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
+        this.isConnected = true;
         LOG.info("Initialized with connection tuple '{}'", connectionTuple);
     }
 
@@ -59,12 +63,28 @@ public class MinecraftClient implements IMinecraftClient {
     }
 
     @Override
+    public boolean isConnected(Duration timeout) {
+        try {
+            sendRaw("ping").get(timeout.toSeconds(), TimeUnit.SECONDS);
+            return true;
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            LOG.error("Lost connection to {}", connectionTuple);
+            safeClose();
+            return false;
+        }
+    }
+
+    @Override
     public Future<RconResponse> sendRaw(String command) {
         return sendRaw(RCON_COMMAND, command, false);
     }
 
     private Future<RconResponse> sendRaw(int requestType, String command, boolean silently) {
-        return executorService.submit(doSynchronousSend(requestType, command, silently));
+        if (isConnected) {
+            return executorService.submit(doSynchronousSend(requestType, command, silently));
+        } else {
+            throw new RconCommandException("Attempting to communicate using closed MinecraftClient");
+        }
     }
 
     private Callable<RconResponse> doSynchronousSend(int requestType, String command, boolean silently) {
@@ -101,7 +121,7 @@ public class MinecraftClient implements IMinecraftClient {
         final byte byteTwo = packageTailBytes.get(1);
 
         if (byteOne != 0 || byteTwo != 0) {
-            throw new RuntimeException("Expected two nil bytes at the end of response data");
+            throw new RconCommandException("Expected two nil bytes at the end of response data");
         }
 
         final byte[] dataBytesArray = new byte[dataBytes.remaining()];
@@ -115,14 +135,14 @@ public class MinecraftClient implements IMinecraftClient {
             final int readCount = rconSocketChannel.read(buffer);
 
             if (readCount != bytes) {
-                throw new RuntimeException(String.format("Expected %d bytes but received %d", bytes, readCount));
+                throw new RconCommandException("Expected %d bytes but received %d", bytes, readCount);
             }
 
             buffer.position(0);
             buffer.order(ByteOrder.LITTLE_ENDIAN);
             return buffer;
         } catch (IOException e) {
-            throw new RuntimeException(String.format("Failed to read %d bytes", bytes), e);
+            throw new RconCommandException(e, String.format("Failed to read %d bytes", bytes));
         }
     }
 
@@ -145,8 +165,17 @@ public class MinecraftClient implements IMinecraftClient {
 
     @Override
     public void close() throws IOException {
+        isConnected = false;
         executorService.shutdown();
         rconSocketChannel.close();
+    }
+
+    private void safeClose() {
+        try {
+            close();
+        } catch (IOException e) {
+            // Nothing!
+        }
     }
 
     private void printCommand(String rawCommand) {
