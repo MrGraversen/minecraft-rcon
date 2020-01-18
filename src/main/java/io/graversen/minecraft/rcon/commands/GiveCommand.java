@@ -1,6 +1,7 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Item;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
@@ -16,6 +17,14 @@ public class GiveCommand extends BaseTargetedCommand {
         this.item = Objects.requireNonNull(item);
         this.nbt = Objects.requireNonNullElse(nbt, "");
         this.count = count;
+    }
+
+    public GiveCommand(String target, String item, int count) {
+        this(target, item, null, count);
+    }
+
+    public GiveCommand(String target, Item item, int count) {
+        this(target, item.toString(), count);
     }
 
     public String getItem() {
