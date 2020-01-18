@@ -38,13 +38,13 @@ Add the following to your `pom.xml` if using Maven (click the little JitPack bad
 <dependency>
 	<groupId>com.github.MrGraversen</groupId>
 	<artifactId>minecraft-rcon</artifactId>
-	<version>LATEST</version>
+	<version>0.0.3</version>
 </dependency>
 ```
 
-## Configuration
+## Minecraft Configuration
 
-To configure RCON, you need to add/modify the following properties in your `server.properties` file:
+To configure Minecraft RCON, you need to add/modify the following properties in your Minecraft server's `server.properties` file:
 
 ```
 enable-rcon=true
@@ -55,82 +55,90 @@ broadcast-rcon-to-ops=false
 
 Once done, RCON is available using this client.
 
-## Example
+## Example 1
 
-The example is also available in the `io.graversen.minecraft.rcon.examples.TellRawAndGiveExample` class.
+The example is also available in the `io.graversen.minecraft.rcon.examples.Example1.java` class.
 
 ```java
-// Prepare the builders
-final TellRawCommandBuilder tellRawCommandBuilder = new TellRawCommandBuilder();
-final TitleCommandBuilder titleCommandBuilder = new TitleCommandBuilder();
-final GiveCommandBuilder giveCommandBuilder = new GiveCommandBuilder();
+        // Define a simple MinecraftRconService
+        // Assuming Minecraft server is running on localhost and password set to "test"
+        // If no port is specified, the default Minecraft RCON port will be used
+        final MinecraftRconService minecraftRconService = new MinecraftRconService(
+                RconDetails.localhost("test"),
+                ConnectOptions.defaults()
+        );
 
-// Attempt to open and authenticate a RCON connection
-// We assume the server is running locally, and the RCON password is "abc123"
-// If no port is specified, it will use the default RCON port
-final RconClient rconClient = RconClient.connect("localhost", "abc123");
+        // Let's go!
+        minecraftRconService.connectBlocking(Duration.ofSeconds(3));
 
-// Build a TellRaw command
-final TellRawCommand tellRawCommand1 = tellRawCommandBuilder
-		.targeting(Selectors.ALL_PLAYERS)
-		.withText("It's dangerous to go alone - ")
-		.withColor(Colors.GRAY)
-		.italic()
-		.build();
+        // After connecting, we can (crudely) fetch the underlying Minecraft RCON provider
+        final MinecraftRcon minecraftRcon = minecraftRconService.minecraftRcon().orElseThrow(IllegalStateException::new);
 
-// Build another TellRaw command
-// The RCON client is able to transparently string together multiple TellRaw commands,
-// if for example different colors and formatting is desired for a single message
-final TellRawCommand tellRawCommand2 = tellRawCommandBuilder
-		.targeting(Selectors.ALL_PLAYERS)
-		.withText("Take this!")
-		.withColor(Colors.DARK_AQUA)
-		.italic()
-		.build();
+        // Build a TellRaw command - first half of the desired message
+        final TellRawCommand tellRawCommand1 = new TellRawCommandBuilder()
+                .targeting(Selectors.ALL_PLAYERS)
+                .withText("It's dangerous to go alone - ")
+                .withColor(Colors.GRAY)
+                .italic()
+                .build();
 
-// Let's also add a nice title to the players' screens
-final TitleCommand titleCommand = titleCommandBuilder
-		.targeting(Selectors.ALL_PLAYERS)
-		.atPosition(TitlePositions.TITLE)
-		.withColor(Colors.GREEN)
-		.withText("Welcome!")
-		.build();
 
-// We'll give everyone a diamond sword - it's dangerous without
-final GiveCommand giveCommand = giveCommandBuilder
-		.targeting(Selectors.ALL_PLAYERS)
-		.withItem("minecraft", "diamond_sword")
-		.amount(1)
-		.build();
+        // Build another TellRaw command - other half of the message
+        final TellRawCommand tellRawCommand2 = new TellRawCommandBuilder()
+                .targeting(Selectors.ALL_PLAYERS)
+                .withText("Take this!")
+                .withColor(Colors.DARK_AQUA)
+                .italic()
+                .build();
 
-// Send the two TellRaw commands
-rconClient.rcon().tellRaw(tellRawCommand1, tellRawCommand2);
+        // We are able to transparently stitch together multiple 'tellraw' commands,
+        // combining their styles and texts into a composite viewing
+        final TellRawCompositeCommand tellRawCompositeCommand = new TellRawCompositeCommand(List.of(tellRawCommand1, tellRawCommand2));
 
-// Set the title
-rconClient.rcon().title(titleCommand);
+        // Let's also add a nice title to the players' screens
+        final TitleCommand titleCommand = new TitleCommandBuilder()
+                .targeting(Selectors.ALL_PLAYERS)
+                .atPosition(TitlePositions.TITLE)
+                .withColor(Colors.GREEN)
+                .withText("Welcome!")
+                .build();
 
-// Grant the players their weapon
-rconClient.rcon().give(giveCommand);
+        // We'll give everyone a diamond sword - it's dangerous without
+        final GiveCommand giveCommand = new GiveCommand(
+                Selectors.ALL_PLAYERS.getSelectorString(), new MinecraftItem("diamond_sword"), 1
+        );
 
-// It is also easy to change game rules of the server
-rconClient.rcon().gameRules().setGameRule(GameRules.MOB_GRIEFING, false);
+        // Fire away!
+        minecraftRcon.sendAsync(tellRawCompositeCommand, titleCommand, giveCommand);
 
-// Changing time of day is trivial as well
-rconClient.rcon().time(TimeLabels.DAY);
+        // Just for fun, let's also change some other things
+
+        // Set time of day to noon and clear weather - nice and sunny
+        final TimeCommand timeCommand = new TimeCommand(TimeLabels.NOON);
+        final WeatherCommand weatherCommand = new WeatherCommand(Weathers.CLEAR, Duration.ofHours(1).toSeconds());
+        minecraftRcon.sendAsync(timeCommand, weatherCommand);
+
+        // The players hate it when their creations are blown up by Creepers, lets' help them
+        final ICommand disableMobGriefing = GameRulesCommands.setGameRule(GameRules.MOB_GRIEFING, false);
+        minecraftRcon.sendAsync(disableMobGriefing);
 ```
 
-**Result:**
+**In-game result:**
 
 ![Result](https://i.imgur.com/JFowbeh.png)
 
 **Sample console output:**
 
 ```
-[RconClient]: Initialized: localhost:25575
-[RconClient]: Authenticating
-[RconClient]: Piping command: tellraw @a [{"text":"It\u0027s dangerous to go alone - ","bold":false,"italic":true,"underlined":false,"striketrough":false,"obfuscated":false,"color":"gray"},{"text":"Take this!","bold":false,"italic":true,"underlined":false,"striketrough":false,"obfuscated":false,"color":"dark_aqua"}]
-[RconClient]: Piping command: title @a title {"text":"Welcome!","bold":false,"italic":false,"underlined":false,"striketrough":false,"obfuscated":false,"color":"green"}
-[RconClient]: Piping command: give @a minecraft:diamond_sword 1
-[RconClient]: Piping command: gamerule mobGriefing false
-[RconClient]: Piping command: time set day
+14:07:27.700 [pool-1-thread-2] DEBUG io.graversen.minecraft.rcon.service.ConnectTask - Connection attempt 1
+14:07:27.718 [pool-1-thread-2] INFO io.graversen.minecraft.rcon.MinecraftClient - Initialized with connection tuple 'localhost:25575'
+14:07:27.718 [pool-1-thread-2] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Authenticating...
+14:07:27.721 [pool-1-thread-2] INFO io.graversen.minecraft.rcon.MinecraftClient - Connection success!
+14:07:27.770 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: tellraw @a [{"text":"It\u0027s dangerous to go alone - ","bold":false,"italic":true,"underlined":false,"striketrough":false,"obfuscated":false,"color":"gray"},{"text":"Take this!","bold":false,"italic":true,"underlined":false,"striketrough":false,"obfuscated":false,"color":"dark_aqua"}]
+14:07:27.771 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: title @a title {"text":"Welcome!","bold":false,"italic":false,"underlined":false,"striketrough":false,"obfuscated":false,"color":"green"}
+14:07:27.771 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: give @a minecraft:diamond_sword 1
+14:07:27.782 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: time set 6000
+14:07:27.782 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: weather clear 3600
+14:07:27.798 [pool-2-thread-1] DEBUG io.graversen.minecraft.rcon.MinecraftClient - Sending command: gamerule mobGriefing false
+
 ```
