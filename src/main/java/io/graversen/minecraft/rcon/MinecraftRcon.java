@@ -3,6 +3,7 @@ package io.graversen.minecraft.rcon;
 import io.graversen.minecraft.rcon.commands.base.ICommand;
 import io.graversen.minecraft.rcon.query.IRconResponseMapper;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -28,6 +29,11 @@ public class MinecraftRcon implements IMinecraftRcon {
     @Override
     public Future<RconResponse> sendAsync(ICommand command) {
         return rconClient.sendRaw(command.command());
+    }
+
+    @Override
+    public void sendAsync(ICommand... commands) {
+        Arrays.stream(commands).forEach(this::sendAsync);
     }
 
     @Override
