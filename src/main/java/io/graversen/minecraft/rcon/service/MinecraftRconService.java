@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,8 @@ public class MinecraftRconService implements IMinecraftRconService {
     private volatile boolean shouldConnect;
     private volatile boolean isConnected;
 
+    private volatile CountDownLatch connectionLatch;
+
     public MinecraftRconService(RconDetails rconDetails, ConnectOptions connectOptions) {
         this.rconDetails = rconDetails;
         this.connectOptions = connectOptions;
@@ -33,8 +36,24 @@ public class MinecraftRconService implements IMinecraftRconService {
     }
 
     @Override
+    public boolean connectBlocking(Duration timeout) {
+        if (isConnected) {
+            return true;
+        } else {
+            try {
+                connect();
+                connectionLatch.await(timeout.toSeconds(), TimeUnit.SECONDS);
+                return true;
+            } catch (InterruptedException e) {
+                return false;
+            }
+        }
+    }
+
+    @Override
     public void connect() {
         if (!isConnected && !shouldClose) {
+            connectionLatch = new CountDownLatch(1);
             shouldConnect = true;
         }
     }
@@ -103,6 +122,7 @@ public class MinecraftRconService implements IMinecraftRconService {
             minecraftClient = executorService.submit(new ConnectTask(connectOptions, rconDetails)).get();
             minecraftRcon = new MinecraftRcon(minecraftClient);
             isConnected = true;
+            connectionLatch.countDown();
         } catch (Exception e) {
             safeClose(e.getMessage());
         }

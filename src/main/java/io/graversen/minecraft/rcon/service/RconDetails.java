@@ -1,5 +1,7 @@
 package io.graversen.minecraft.rcon.service;
 
+import io.graversen.minecraft.rcon.Defaults;
+
 import java.util.Objects;
 
 public class RconDetails {
@@ -11,6 +13,14 @@ public class RconDetails {
         this.hostname = Objects.requireNonNull(hostname, "Hostname cannot be null");
         this.port = port;
         this.password = Objects.requireNonNullElse(password, "");
+    }
+
+    public static RconDetails localhost() {
+        return localhost("");
+    }
+
+    public static RconDetails localhost(String password) {
+        return new RconDetails("localhost", Defaults.RCON_PORT, password);
     }
 
     public String getHostname() {
