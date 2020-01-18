@@ -1,7 +1,11 @@
 package io.graversen.minecraft.rcon.examples;
 
 import io.graversen.minecraft.rcon.MinecraftRcon;
+import io.graversen.minecraft.rcon.commands.GameRulesCommands;
 import io.graversen.minecraft.rcon.commands.GiveCommand;
+import io.graversen.minecraft.rcon.commands.TimeCommand;
+import io.graversen.minecraft.rcon.commands.WeatherCommand;
+import io.graversen.minecraft.rcon.commands.base.ICommand;
 import io.graversen.minecraft.rcon.commands.tellraw.TellRawCommand;
 import io.graversen.minecraft.rcon.commands.tellraw.TellRawCommandBuilder;
 import io.graversen.minecraft.rcon.commands.tellraw.TellRawCompositeCommand;
@@ -10,10 +14,7 @@ import io.graversen.minecraft.rcon.commands.title.TitleCommandBuilder;
 import io.graversen.minecraft.rcon.service.ConnectOptions;
 import io.graversen.minecraft.rcon.service.MinecraftRconService;
 import io.graversen.minecraft.rcon.service.RconDetails;
-import io.graversen.minecraft.rcon.util.Colors;
-import io.graversen.minecraft.rcon.util.MinecraftItem;
-import io.graversen.minecraft.rcon.util.Selectors;
-import io.graversen.minecraft.rcon.util.TitlePositions;
+import io.graversen.minecraft.rcon.util.*;
 
 import java.time.Duration;
 import java.util.List;
@@ -71,5 +72,16 @@ public class Example1 {
 
         // Fire away!
         minecraftRcon.sendAsync(tellRawCompositeCommand, titleCommand, giveCommand);
+
+        // Just for fun, let's also change some other things
+
+        // Set time of day to noon and clear weather - nice and sunny
+        final TimeCommand timeCommand = new TimeCommand(TimeLabels.NOON);
+        final WeatherCommand weatherCommand = new WeatherCommand(Weathers.CLEAR, Duration.ofHours(1).toSeconds());
+        minecraftRcon.sendAsync(timeCommand, weatherCommand);
+
+        // The players hate it when their creations are blown up by Creepers, lets' help them
+        final ICommand disableMobGriefing = GameRulesCommands.setGameRule(GameRules.MOB_GRIEFING, false);
+        minecraftRcon.sendAsync(disableMobGriefing);
     }
 }
