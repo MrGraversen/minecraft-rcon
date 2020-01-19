@@ -16,6 +16,16 @@ public class MinecraftRcon implements IMinecraftRcon {
     }
 
     @Override
+    public Future<RconResponse> sendAsync(ICommand command) {
+        return rconClient.sendRaw(commandToString(command));
+    }
+
+    @Override
+    public void sendAsync(ICommand... commands) {
+        Arrays.stream(commands).forEach(this::sendAsync);
+    }
+
+    @Override
     public RconResponse sendSync(ICommand command) {
         final var responseFuture = sendAsync(command);
 
@@ -27,18 +37,12 @@ public class MinecraftRcon implements IMinecraftRcon {
     }
 
     @Override
-    public Future<RconResponse> sendAsync(ICommand command) {
-        return rconClient.sendRaw(command.command());
-    }
-
-    @Override
-    public void sendAsync(ICommand... commands) {
-        Arrays.stream(commands).forEach(this::sendAsync);
-    }
-
-    @Override
     public <T> T query(ICommand command, IRconResponseMapper<T> rconResponseMapper) {
         final var rconResponse = sendSync(command);
         return rconResponseMapper.safeApply(rconResponse);
+    }
+
+    private String commandToString(ICommand command) {
+        return command.command().trim();
     }
 }

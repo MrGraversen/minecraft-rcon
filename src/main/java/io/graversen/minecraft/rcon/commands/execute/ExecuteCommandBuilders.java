@@ -1,7 +1,6 @@
 package io.graversen.minecraft.rcon.commands.execute;
 
-import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.commands.base.INonTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.BasePositionalCommand;
 import io.graversen.minecraft.rcon.util.Selectors;
 import org.apache.commons.text.StringSubstitutor;
 
@@ -21,7 +20,6 @@ public class ExecuteCommandBuilders {
     }
 
     public static class ExecuteAtCommandBuilder {
-        private static final String EXECUTE_AT_COMMAND_TEMPLATE = "execute at ${target} run ${command}";
         private final String target;
 
         ExecuteAtCommandBuilder(String target) {
@@ -32,9 +30,9 @@ public class ExecuteCommandBuilders {
             return target;
         }
 
-        public ExecuteCommand run(INonTargetedCommand command) {
+        public ExecuteCommand run(BasePositionalCommand command) {
             final String compiledCommand = StringSubstitutor.replace(
-                    EXECUTE_AT_COMMAND_TEMPLATE,
+                    "execute at ${target} run ${command}",
                     Map.of(
                             "target", getTarget(),
                             "command", command.command()

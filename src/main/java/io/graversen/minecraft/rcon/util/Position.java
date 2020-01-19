@@ -5,25 +5,25 @@ import org.apache.commons.text.StringSubstitutor;
 import java.util.Map;
 
 public class Position {
-    private final long x;
-    private final long y;
-    private final long z;
+    private final Coordinate x;
+    private final Coordinate y;
+    private final Coordinate z;
 
-    public Position(long x, long y, long z) {
+    public Position(Coordinate x, Coordinate y, Coordinate z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public long getX() {
+    public Coordinate getX() {
         return x;
     }
 
-    public long getY() {
+    public Coordinate getY() {
         return y;
     }
 
-    public long getZ() {
+    public Coordinate getZ() {
         return z;
     }
 
@@ -32,9 +32,9 @@ public class Position {
         return StringSubstitutor.replace(
                 "${x} ${y} ${z}",
                 Map.of(
-                        "x", x,
-                        "y", y,
-                        "z", z
+                        "x", getX().coordinate(),
+                        "y", getY().coordinate(),
+                        "z", getZ().coordinate()
                 )
         );
     }
