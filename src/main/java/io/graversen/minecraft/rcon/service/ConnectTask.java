@@ -2,13 +2,11 @@ package io.graversen.minecraft.rcon.service;
 
 import io.graversen.minecraft.rcon.MinecraftClient;
 import io.graversen.minecraft.rcon.RconConnectException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.tinylog.Logger;
 
 import java.util.concurrent.Callable;
 
 class ConnectTask implements Callable<MinecraftClient> {
-    private static Logger LOG = LoggerFactory.getLogger(ConnectTask.class);
     private final ConnectOptions connectOptions;
     private final RconDetails rconDetails;
 
@@ -22,13 +20,13 @@ class ConnectTask implements Callable<MinecraftClient> {
         int currentAttempt = 1;
 
         while (currentAttempt <= connectOptions.getMaxRetries()) {
-            LOG.debug("Connection attempt {}", currentAttempt);
+            Logger.debug("Connection attempt {}", currentAttempt);
             currentAttempt++;
 
             try {
                 return MinecraftClient.connect(rconDetails.getHostname(), rconDetails.getPassword(), rconDetails.getPort());
             } catch (Exception e) {
-                LOG.debug("Connection attempt failed due to: {}", e.getMessage());
+                Logger.debug("Connection attempt failed due to: {}", e.getMessage());
 
                 if (currentAttempt < connectOptions.getMaxRetries() + 1) {
                     sleep();
