@@ -15,13 +15,18 @@ public class PlayerListMapper implements IRconResponseMapper<PlayerList> {
 
     @Override
     public PlayerList apply(RconResponse rconResponse) {
-        final String[] players = rconResponse.getResponseString().split(PATTERN_INITIAL.pattern());
+        if (rconResponse.getResponseString() != null) {
+            final String responseString = rconResponse.getResponseString().trim();
+            final String[] players = responseString.split(PATTERN_INITIAL.pattern());
 
-        if (players.length == 2) {
-            return extractPlayerUuids(players[1]);
-        } else {
-            return new PlayerList(List.of());
+            if (players.length == 2) {
+                return extractPlayerUuids(players[1]);
+            } else {
+                return new PlayerList(List.of());
+            }
         }
+
+        return new PlayerList(List.of());
     }
 
     private PlayerList extractPlayerUuids(String players) {

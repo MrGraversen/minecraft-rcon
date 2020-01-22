@@ -24,7 +24,7 @@ class PlayerListMapperTest {
     @Test
     void apply_noPlayersOnline() {
         final var testRconResponse =
-                new RconResponse(0, 0, 0, 0, "There are 0 of a max 20 players online:");
+                new RconResponse(0, 0, 0, 0, "There are 0 of a max 20 players online: ");
 
         final var playerList = playerListMapper.apply(testRconResponse);
 
