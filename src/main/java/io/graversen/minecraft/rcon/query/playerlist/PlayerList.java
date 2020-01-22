@@ -3,13 +3,13 @@ package io.graversen.minecraft.rcon.query.playerlist;
 import java.util.List;
 
 public class PlayerList {
-    private final List<String> playerNames;
+    private final List<String> playerUuids;
 
-    PlayerList(List<String> playerNames) {
-        this.playerNames = playerNames;
+    PlayerList(List<String> playerUuids) {
+        this.playerUuids = playerUuids;
     }
 
-    public List<String> getPlayerNames() {
-        return playerNames;
+    public List<String> getPlayerUuids() {
+        return playerUuids;
     }
 }
