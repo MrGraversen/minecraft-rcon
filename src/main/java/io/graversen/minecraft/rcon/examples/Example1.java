@@ -67,7 +67,7 @@ public class Example1 {
 
         // We'll give everyone a diamond sword - it's dangerous without
         final GiveCommand giveCommand = new GiveCommand(
-                Selectors.ALL_PLAYERS.getSelectorString(), new MinecraftItem("diamond_sword"), 1
+                Target.selector(Selectors.ALL_PLAYERS), new MinecraftItem("diamond_sword"), null, 1
         );
 
         // Fire away!

@@ -1,9 +1,10 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 
 public class PardonCommand extends BaseTargetedCommand {
-    public PardonCommand(String target) {
+    public PardonCommand(Target target) {
         super(target);
     }
 

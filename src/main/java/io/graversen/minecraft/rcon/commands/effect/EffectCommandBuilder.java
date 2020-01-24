@@ -4,9 +4,10 @@ import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.util.Effects;
 import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Target;
 
 public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectCommandBuilder>, ICommandBuilder<EffectCommand> {
-    private String target;
+    private Target target;
     private String clear = "";
     private String effect;
     private int seconds = 30;
@@ -27,13 +28,13 @@ public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectComm
 
     @Override
     public EffectCommandBuilder targeting(String playerName) {
-        this.target = playerName;
+        this.target = Target.player(playerName);
         return this;
     }
 
     @Override
     public EffectCommandBuilder targeting(Selectors usingSelector) {
-        this.target = usingSelector.getSelectorString();
+        this.target = Target.selector(usingSelector);
         return this;
     }
 

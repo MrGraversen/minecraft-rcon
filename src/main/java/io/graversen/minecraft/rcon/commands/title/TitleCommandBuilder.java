@@ -4,10 +4,11 @@ import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.util.Colors;
 import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Target;
 import io.graversen.minecraft.rcon.util.TitlePositions;
 
 public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleCommandBuilder>, ICommandBuilder<TitleCommand> {
-    private String target;
+    private Target target;
     private String position;
     private String text;
     private boolean bold;
@@ -19,13 +20,13 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
 
     @Override
     public TitleCommandBuilder targeting(String playerName) {
-        this.target = playerName;
+        this.target = Target.player(playerName);
         return this;
     }
 
     @Override
     public TitleCommandBuilder targeting(Selectors usingSelector) {
-        this.target = usingSelector.getSelectorString();
+        this.target = Target.selector(usingSelector);
         return this;
     }
 

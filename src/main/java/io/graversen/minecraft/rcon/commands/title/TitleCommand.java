@@ -2,6 +2,7 @@ package io.graversen.minecraft.rcon.commands.title;
 
 import io.graversen.minecraft.rcon.JsonUtils;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
@@ -16,7 +17,17 @@ public class TitleCommand extends BaseTargetedCommand {
     private final boolean obfuscated;
     private final String color;
 
-    public TitleCommand(String target, String text, String position, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color) {
+    TitleCommand(
+            Target target,
+            String text,
+            String position,
+            boolean bold,
+            boolean italic,
+            boolean underlined,
+            boolean striketrough,
+            boolean obfuscated,
+            String color
+    ) {
         super(target);
         this.text = text;
         this.position = position;

@@ -2,13 +2,10 @@ package io.graversen.minecraft.rcon.commands.tellraw;
 
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.util.ClickEventActions;
-import io.graversen.minecraft.rcon.util.Colors;
-import io.graversen.minecraft.rcon.util.HoverEventActions;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.*;
 
 public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCommandBuilder>, ICommandBuilder<TellRawCommand> {
-    private String target;
+    private Target target;
     private String text;
     private boolean bold;
     private boolean italic;
@@ -18,17 +15,16 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     private String color;
     private ClickEvent clickEvent;
     private HoverEvent hoverEvent;
-    private TellRawCommand[] extra;
 
     @Override
     public TellRawCommandBuilder targeting(String playerName) {
-        this.target = playerName;
+        this.target = Target.player(playerName);
         return this;
     }
 
     @Override
     public TellRawCommandBuilder targeting(Selectors usingSelector) {
-        this.target = usingSelector.getSelectorString();
+        this.target = Target.selector(usingSelector);
         return this;
     }
 
@@ -67,11 +63,6 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
         return this;
     }
 
-    public TellRawCommandBuilder withExtras(TellRawCommand... tellRawCommands) {
-        this.extra = tellRawCommands;
-        return this;
-    }
-
     public TellRawCommandBuilder withClickEvent(ClickEventActions clickEventAction, String value) {
         this.clickEvent = new ClickEvent(clickEventAction.name().toLowerCase(), value);
         return this;
@@ -90,7 +81,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     @Override
     public TellRawCommand build() {
         if (validate()) {
-            return new TellRawCommand(target, text, bold, italic, underlined, striketrough, obfuscated, color, clickEvent, hoverEvent, extra);
+            return new TellRawCommand(target, text, bold, italic, underlined, striketrough, obfuscated, color, clickEvent, hoverEvent);
         } else {
             throw new IllegalArgumentException("Could not construct valid TellRaw Command");
         }

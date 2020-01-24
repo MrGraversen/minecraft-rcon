@@ -1,6 +1,7 @@
 package io.graversen.minecraft.rcon.commands.effect;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
@@ -12,7 +13,7 @@ public class EffectCommand extends BaseTargetedCommand {
     private final int amplifier;
     private final boolean hideParticles;
 
-    public EffectCommand(String target, String clear, String effect, int seconds, int amplifier, boolean hideParticles) {
+    public EffectCommand(Target target, String clear, String effect, int seconds, int amplifier, boolean hideParticles) {
         super(target);
         this.clear = clear;
         this.effect = effect;

@@ -1,17 +1,19 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 import io.graversen.minecraft.rcon.util.WhiteListModes;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class WhiteListCommand extends BaseTargetedCommand {
     private final WhiteListModes whiteListMode;
 
-    public WhiteListCommand(WhiteListModes whiteListMode, String target) {
+    public WhiteListCommand(Target target, WhiteListModes whiteListMode) {
         super(target);
-        this.whiteListMode = whiteListMode;
+        this.whiteListMode = Objects.requireNonNull(whiteListMode);
     }
 
     public WhiteListModes getWhiteListMode() {

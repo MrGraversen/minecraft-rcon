@@ -1,16 +1,17 @@
 package io.graversen.minecraft.rcon.commands.base;
 
+import io.graversen.minecraft.rcon.util.Target;
+
 import java.util.Objects;
 
 public abstract class BaseTargetedCommand implements ICommand {
-    private transient final String target;
+    private transient final Target target;
 
-    public BaseTargetedCommand(String target) {
-        Objects.requireNonNull(target);
-        this.target = target;
+    public BaseTargetedCommand(Target target) {
+        this.target = Objects.requireNonNull(target);
     }
 
-    public String getTarget() {
+    public Target getTarget() {
         return target;
     }
 }

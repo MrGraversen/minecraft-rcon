@@ -2,6 +2,7 @@ package io.graversen.minecraft.rcon.commands.tellraw;
 
 import io.graversen.minecraft.rcon.JsonUtils;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
@@ -16,37 +17,19 @@ public class TellRawCommand extends BaseTargetedCommand {
     private final String color;
     private final ClickEvent clickEvent;
     private final HoverEvent hoverEvent;
-    private final TellRawCommand[] extra;
 
-    public TellRawCommand(String target, String text, boolean bold, boolean italic) {
-        super(target);
-        this.text = text;
-        this.bold = bold;
-        this.italic = italic;
-        this.underlined = false;
-        this.striketrough = false;
-        this.obfuscated = false;
-        this.clickEvent = null;
-        this.hoverEvent = null;
-        this.color = null;
-        this.extra = null;
-    }
-
-    public TellRawCommand(String target, String text, String color, boolean bold, boolean italic) {
-        super(target);
-        this.text = text;
-        this.bold = bold;
-        this.italic = italic;
-        this.underlined = false;
-        this.striketrough = false;
-        this.obfuscated = false;
-        this.clickEvent = null;
-        this.hoverEvent = null;
-        this.color = color;
-        this.extra = null;
-    }
-
-    public TellRawCommand(String target, String text, boolean bold, boolean italic, boolean underlined, boolean striketrough, boolean obfuscated, String color, ClickEvent clickEvent, HoverEvent hoverEvent, TellRawCommand[] extra) {
+    TellRawCommand(
+            Target target,
+            String text,
+            boolean bold,
+            boolean italic,
+            boolean underlined,
+            boolean striketrough,
+            boolean obfuscated,
+            String color,
+            ClickEvent clickEvent,
+            HoverEvent hoverEvent
+    ) {
         super(target);
         this.text = text;
         this.bold = bold;
@@ -57,7 +40,6 @@ public class TellRawCommand extends BaseTargetedCommand {
         this.color = color;
         this.clickEvent = clickEvent;
         this.hoverEvent = hoverEvent;
-        this.extra = extra;
     }
 
     public String getText() {
@@ -94,10 +76,6 @@ public class TellRawCommand extends BaseTargetedCommand {
 
     public HoverEvent getHoverEvent() {
         return hoverEvent;
-    }
-
-    public TellRawCommand[] getExtra() {
-        return extra;
     }
 
     @Override
