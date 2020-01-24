@@ -1,6 +1,7 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.util.Target;
 import org.apache.commons.text.StringSubstitutor;
 
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Objects;
 public class BanCommand extends BaseTargetedCommand {
     private final String reason;
 
-    public BanCommand(String target, String reason) {
+    public BanCommand(Target target, String reason) {
         super(target);
         this.reason = Objects.requireNonNullElse(reason, "Banned");
     }
