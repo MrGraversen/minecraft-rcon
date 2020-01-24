@@ -14,7 +14,7 @@ public class SummonCommand extends BasePositionalCommand {
     public SummonCommand(Position position, String entityName, String nbt) {
         super(position);
         this.entityName = Objects.requireNonNull(entityName);
-        this.nbt = Objects.requireNonNullElse(nbt, "");;
+        this.nbt = Objects.requireNonNullElse(nbt, "");
     }
 
     public String getEntityName() {

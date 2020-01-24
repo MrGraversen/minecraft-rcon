@@ -15,6 +15,14 @@ public class Position {
         this.z = z;
     }
 
+    public static Position simple(long x, long y, long z) {
+        return new Position(
+                Coordinate.simple(x),
+                Coordinate.simple(y),
+                Coordinate.simple(z)
+        );
+    }
+
     public Coordinate getX() {
         return x;
     }
