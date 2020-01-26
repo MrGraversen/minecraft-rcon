@@ -36,7 +36,7 @@ public class ExecuteCommandBuilders {
             return target;
         }
 
-        public ExecuteCommand run(BasePositionalCommand command) {
+        public ExecuteCommand run(ICommand command) {
             final String compiledCommand = StringSubstitutor.replace(
                     "execute at ${target} run ${command}",
                     Map.of(
