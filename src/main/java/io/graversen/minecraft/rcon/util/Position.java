@@ -23,6 +23,14 @@ public class Position {
         );
     }
 
+    public static Position relative() {
+        return new Position(
+                Coordinate.relative(0),
+                Coordinate.relative(0),
+                Coordinate.relative(0)
+        );
+    }
+
     public Coordinate getX() {
         return x;
     }
