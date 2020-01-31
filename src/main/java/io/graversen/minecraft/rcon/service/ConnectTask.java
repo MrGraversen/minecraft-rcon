@@ -19,7 +19,7 @@ class ConnectTask implements Callable<MinecraftClient> {
     public MinecraftClient call() throws Exception {
         int currentAttempt = 1;
 
-        while (currentAttempt <= connectOptions.getMaxRetries()) {
+        while (currentAttempt <= connectOptions.getMaxRetries() && !Thread.currentThread().isInterrupted()) {
             Logger.debug("Connection attempt {}", currentAttempt);
             currentAttempt++;
 
