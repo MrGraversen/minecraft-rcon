@@ -41,7 +41,7 @@ class ConnectTask implements Callable<MinecraftClient> {
         try {
             Thread.sleep(connectOptions.getTimeBetweenRetries().toMillis());
         } catch (InterruptedException e) {
-            // Nothing
+            Thread.currentThread().interrupt();
         }
     }
 }
