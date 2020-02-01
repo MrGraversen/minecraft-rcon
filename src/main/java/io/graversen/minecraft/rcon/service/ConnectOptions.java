@@ -34,4 +34,13 @@ public class ConnectOptions {
     public Duration getConnectionWatcherInterval() {
         return connectionWatcherInterval;
     }
+
+    @Override
+    public String toString() {
+        return "ConnectOptions{" +
+                "maxRetries=" + maxRetries +
+                ", timeBetweenRetries=" + timeBetweenRetries +
+                ", connectionWatcherInterval=" + connectionWatcherInterval +
+                '}';
+    }
 }

@@ -13,23 +13,27 @@ class ConnectTask implements Callable<MinecraftClient> {
     ConnectTask(ConnectOptions connectOptions, RconDetails rconDetails) {
         this.connectOptions = connectOptions;
         this.rconDetails = rconDetails;
+        Logger.debug(connectOptions);
+        Logger.debug(rconDetails);
     }
 
     @Override
     public MinecraftClient call() throws Exception {
-        int currentAttempt = 1;
+        int currentAttempt = 0;
 
-        while (currentAttempt <= connectOptions.getMaxRetries() && !Thread.currentThread().isInterrupted()) {
-            Logger.debug("Connection attempt {}", currentAttempt);
+        while (currentAttempt < connectOptions.getMaxRetries() && !Thread.currentThread().isInterrupted()) {
             currentAttempt++;
+            Logger.debug("Connection attempt {}", currentAttempt);
 
             try {
                 return MinecraftClient.connect(rconDetails.getHostname(), rconDetails.getPassword(), rconDetails.getPort());
             } catch (Exception e) {
                 Logger.debug("Connection attempt failed due to: {}", e.getMessage());
-
-                if (currentAttempt < connectOptions.getMaxRetries() + 1) {
+            } finally {
+                if (currentAttempt < connectOptions.getMaxRetries()) {
                     sleep();
+                } else {
+                    Logger.debug("Ran out of retries after {} total attempts", currentAttempt);
                 }
             }
         }
@@ -39,8 +43,10 @@ class ConnectTask implements Callable<MinecraftClient> {
 
     private void sleep() {
         try {
+            Logger.debug("Pausing for {} ms", connectOptions.getTimeBetweenRetries().toMillis());
             Thread.sleep(connectOptions.getTimeBetweenRetries().toMillis());
         } catch (InterruptedException e) {
+            e.printStackTrace();
             Thread.currentThread().interrupt();
         }
     }
