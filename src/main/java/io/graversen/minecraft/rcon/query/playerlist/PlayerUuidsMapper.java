@@ -9,32 +9,32 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class PlayerListMapper implements IRconResponseMapper<PlayerList> {
+public class PlayerUuidsMapper implements IRconResponseMapper<PlayerUuids> {
     static final Pattern PATTERN_INITIAL = Pattern.compile(":");
     static final Pattern PATTERN_PLAYERS = Pattern.compile(",");
 
     @Override
-    public PlayerList apply(RconResponse rconResponse) {
+    public PlayerUuids apply(RconResponse rconResponse) {
         if (rconResponse.getResponseString() != null) {
             final String responseString = rconResponse.getResponseString().trim();
             final String[] players = responseString.split(PATTERN_INITIAL.pattern());
 
             if (players.length == 2) {
-                return extractPlayerUuids(players[1]);
+                return extractPlayerList(players[1]);
             } else {
-                return new PlayerList(List.of());
+                return new PlayerUuids(List.of());
             }
         }
 
-        return new PlayerList(List.of());
+        return new PlayerUuids(List.of());
     }
 
-    private PlayerList extractPlayerUuids(String players) {
-        final var playerUuids = Arrays.stream(players.split(PATTERN_PLAYERS.pattern()))
+    private PlayerUuids extractPlayerList(String playersRaw) {
+        final var players = Arrays.stream(playersRaw.split(PATTERN_PLAYERS.pattern()))
                 .map(String::trim)
                 .map(player -> StringUtils.substringBetween(player, "(", ")"))
                 .collect(Collectors.toUnmodifiableList());
 
-        return new PlayerList(playerUuids);
+        return new PlayerUuids(players);
     }
 }
