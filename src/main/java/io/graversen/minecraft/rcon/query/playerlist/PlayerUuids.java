@@ -2,10 +2,10 @@ package io.graversen.minecraft.rcon.query.playerlist;
 
 import java.util.List;
 
-public class PlayerList {
+public class PlayerUuids {
     private final List<String> playerUuids;
 
-    PlayerList(List<String> playerUuids) {
+    PlayerUuids(List<String> playerUuids) {
         this.playerUuids = playerUuids;
     }
 
