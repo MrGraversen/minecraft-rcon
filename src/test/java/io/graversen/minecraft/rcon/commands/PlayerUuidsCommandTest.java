@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PlayerListCommandTest {
+class PlayerUuidsCommandTest {
     @Test
     void playerListCommand_uuids() {
         final var command = PlayerListCommand.uuids();
