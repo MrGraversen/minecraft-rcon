@@ -2,7 +2,7 @@ package io.graversen.minecraft.rcon.service;
 
 import io.graversen.minecraft.rcon.IMinecraftClient;
 import io.graversen.minecraft.rcon.MinecraftRcon;
-import org.tinylog.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -11,6 +11,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class MinecraftRconService implements IMinecraftRconService {
     private final RconDetails rconDetails;
     private final ConnectOptions connectOptions;
@@ -74,7 +75,7 @@ public class MinecraftRconService implements IMinecraftRconService {
 
     private void safeClose(String reason) {
         try {
-            Logger.info("Closing with reason: {}", reason);
+            log.info("Closing with reason: {}", reason);
             isConnected = false;
 
             if (minecraftClient != null) {
@@ -103,7 +104,7 @@ public class MinecraftRconService implements IMinecraftRconService {
             public void onPingResult(PingResult pingResult) {
                 if (!pingResult.isSuccess() && shouldConnect) {
                     if (isConnected) {
-                        Logger.warn("Connection broken - resetting");
+                        log.warn("Connection broken - resetting");
                         isConnected = false;
                         minecraftClient = null;
                         minecraftRcon = null;

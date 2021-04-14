@@ -2,10 +2,11 @@ package io.graversen.minecraft.rcon.service;
 
 import io.graversen.minecraft.rcon.MinecraftClient;
 import io.graversen.minecraft.rcon.RconConnectException;
-import org.tinylog.Logger;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.Callable;
 
+@Slf4j
 class ConnectTask implements Callable<MinecraftClient> {
     private final ConnectOptions connectOptions;
     private final RconDetails rconDetails;
@@ -13,8 +14,7 @@ class ConnectTask implements Callable<MinecraftClient> {
     ConnectTask(ConnectOptions connectOptions, RconDetails rconDetails) {
         this.connectOptions = connectOptions;
         this.rconDetails = rconDetails;
-        Logger.debug(connectOptions);
-        Logger.debug(rconDetails);
+        log.debug("{}", connectOptions);
     }
 
     @Override
@@ -23,17 +23,17 @@ class ConnectTask implements Callable<MinecraftClient> {
 
         while (currentAttempt < connectOptions.getMaxRetries() && !Thread.currentThread().isInterrupted()) {
             currentAttempt++;
-            Logger.debug("Connection attempt {}", currentAttempt);
+            log.debug("Connection attempt {}", currentAttempt);
 
             try {
                 return MinecraftClient.connect(rconDetails.getHostname(), rconDetails.getPassword(), rconDetails.getPort());
             } catch (Exception e) {
-                Logger.debug("Connection attempt failed due to: {}", e.getMessage());
+                log.error("Connection attempt failed", e);
             } finally {
                 if (currentAttempt < connectOptions.getMaxRetries()) {
                     sleep();
                 } else {
-                    Logger.debug("Ran out of retries after {} total attempts", currentAttempt);
+                    log.warn("Ran out of retries after {} total attempts", currentAttempt);
                 }
             }
         }
@@ -43,7 +43,7 @@ class ConnectTask implements Callable<MinecraftClient> {
 
     private void sleep() {
         try {
-            Logger.debug("Pausing for {} ms", connectOptions.getTimeBetweenRetries().toMillis());
+            log.debug("Pausing for {} ms", connectOptions.getTimeBetweenRetries().toMillis());
             Thread.sleep(connectOptions.getTimeBetweenRetries().toMillis());
         } catch (InterruptedException e) {
             e.printStackTrace();
