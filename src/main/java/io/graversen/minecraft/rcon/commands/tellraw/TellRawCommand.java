@@ -87,4 +87,8 @@ public class TellRawCommand extends BaseTargetedCommand {
 
         return StringSubstitutor.replace("tellraw ${target} ${rawJson}", variables);
     }
+
+    public TextContent toTextContent() {
+        return new TextContent(this);
+    }
 }
