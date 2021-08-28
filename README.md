@@ -36,9 +36,9 @@ Add the following to your `pom.xml` if using Maven (click the little JitPack bad
 
 ```
 <dependency>
-	<groupId>com.github.MrGraversen</groupId>
+	<groupId>io.github.MrGraversen</groupId>
 	<artifactId>minecraft-rcon</artifactId>
-	<version>0.0.3</version>
+	<version>0.0.16</version>
 </dependency>
 ```
 
