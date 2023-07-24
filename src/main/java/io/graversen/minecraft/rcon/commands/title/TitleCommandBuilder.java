@@ -14,7 +14,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     private boolean bold;
     private boolean italic;
     private boolean underlined;
-    private boolean striketrough;
+    private boolean strikethrough;
     private boolean obfuscated;
     private String color;
 
@@ -61,7 +61,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     }
 
     public TitleCommandBuilder strikethrough() {
-        this.striketrough = true;
+        this.strikethrough = true;
         return this;
     }
 
@@ -78,7 +78,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     @Override
     public TitleCommand build() {
         if (validate()) {
-            return new TitleCommand(target, text, position, bold, italic, underlined, striketrough, obfuscated, color);
+            return new TitleCommand(target, text, position, bold, italic, underlined, strikethrough, obfuscated, color);
         } else {
             throw new IllegalArgumentException("Could not construct valid Title Command");
         }

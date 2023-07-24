@@ -2,9 +2,7 @@ package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class KickCommand extends BaseTargetedCommand {
@@ -21,12 +19,6 @@ public class KickCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace(
-                "kick ${target} ${reason}",
-                Map.of(
-                        "target", getTarget(),
-                        "reason", getReason()
-                )
-        );
+        return "kick " + getTarget() + " " + getReason();
     }
 }

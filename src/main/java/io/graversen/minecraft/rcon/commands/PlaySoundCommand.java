@@ -5,9 +5,7 @@ import io.graversen.minecraft.rcon.util.NumberUtils;
 import io.graversen.minecraft.rcon.util.Position;
 import io.graversen.minecraft.rcon.util.Sound;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class PlaySoundCommand extends BaseTargetedCommand {
@@ -57,20 +55,13 @@ public class PlaySoundCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        final var variables = Map.of(
-                "sound", getSound(),
-                "target", getTarget(),
-                "position", getPosition(),
-                "volume", String.valueOf(getVolume()),
-                "pitch", String.valueOf(getPitch()),
-                "minimumVolume", String.valueOf(getVolume())
-        );
-
-        final var command = StringSubstitutor.replace(
-                "playsound ${sound} master ${target} ${position} ${volume} ${pitch} ${minimumVolume}",
-                variables
-        );
-
-        return command.trim();
+        return "playsound " +
+                    getSound() + " " +
+                    "master " +
+                    getTarget() + " " +
+                    getPosition() + " " +
+                    getVolume() + " " +
+                    getPitch() + " " +
+                    getVolume();
     }
 }

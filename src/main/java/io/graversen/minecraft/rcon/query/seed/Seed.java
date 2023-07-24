@@ -1,13 +1,13 @@
 package io.graversen.minecraft.rcon.query.seed;
 
 public class Seed {
-    private final String seed;
+    private final String theSeed;
 
     Seed(String seed) {
-        this.seed = seed;
+        this.theSeed = seed;
     }
 
-    public String getSeed() {
-        return seed;
+    public String getTheSeed() {
+        return theSeed;
     }
 }

@@ -3,16 +3,13 @@ package io.graversen.minecraft.rcon.commands.tellraw;
 import io.graversen.minecraft.rcon.JsonUtils;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
 
 public class TellRawCommand extends BaseTargetedCommand {
     private final String text;
     private final boolean bold;
     private final boolean italic;
     private final boolean underlined;
-    private final boolean striketrough;
+    private final boolean strikethrough;
     private final boolean obfuscated;
     private final String color;
     private final ClickEvent clickEvent;
@@ -24,7 +21,7 @@ public class TellRawCommand extends BaseTargetedCommand {
             boolean bold,
             boolean italic,
             boolean underlined,
-            boolean striketrough,
+            boolean strikethrough,
             boolean obfuscated,
             String color,
             ClickEvent clickEvent,
@@ -35,7 +32,7 @@ public class TellRawCommand extends BaseTargetedCommand {
         this.bold = bold;
         this.italic = italic;
         this.underlined = underlined;
-        this.striketrough = striketrough;
+        this.strikethrough = strikethrough;
         this.obfuscated = obfuscated;
         this.color = color;
         this.clickEvent = clickEvent;
@@ -58,8 +55,8 @@ public class TellRawCommand extends BaseTargetedCommand {
         return underlined;
     }
 
-    public boolean isStriketrough() {
-        return striketrough;
+    public boolean isStrikethrough() {
+        return strikethrough;
     }
 
     public boolean isObfuscated() {
@@ -80,12 +77,7 @@ public class TellRawCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        final var variables = Map.of(
-                "target", getTarget(),
-                "rawJson", JsonUtils.toJson(this)
-        );
-
-        return StringSubstitutor.replace("tellraw ${target} ${rawJson}", variables);
+        return "tellraw " + getTarget() + " " + JsonUtils.toJson(this);
     }
 
     public TextContent toTextContent() {

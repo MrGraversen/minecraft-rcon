@@ -3,17 +3,14 @@ package io.graversen.minecraft.rcon.commands.title;
 import io.graversen.minecraft.rcon.JsonUtils;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
 
 public class TitleCommand extends BaseTargetedCommand {
-    private transient final String position;
+    private final transient String position;
     private final String text;
     private final boolean bold;
     private final boolean italic;
     private final boolean underlined;
-    private final boolean striketrough;
+    private final boolean strikethrough;
     private final boolean obfuscated;
     private final String color;
 
@@ -24,7 +21,7 @@ public class TitleCommand extends BaseTargetedCommand {
             boolean bold,
             boolean italic,
             boolean underlined,
-            boolean striketrough,
+            boolean strikethrough,
             boolean obfuscated,
             String color
     ) {
@@ -34,7 +31,7 @@ public class TitleCommand extends BaseTargetedCommand {
         this.bold = bold;
         this.italic = italic;
         this.underlined = underlined;
-        this.striketrough = striketrough;
+        this.strikethrough = strikethrough;
         this.obfuscated = obfuscated;
         this.color = color;
     }
@@ -59,8 +56,8 @@ public class TitleCommand extends BaseTargetedCommand {
         return underlined;
     }
 
-    public boolean isStriketrough() {
-        return striketrough;
+    public boolean isStrikethrough() {
+        return strikethrough;
     }
 
     public boolean isObfuscated() {
@@ -73,12 +70,6 @@ public class TitleCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        final var variables = Map.of(
-                "target", getTarget(),
-                "position", getPosition(),
-                "titleJson", JsonUtils.toJson(this)
-        );
-
-        return StringSubstitutor.replace("title ${target} ${position} ${titleJson}", variables);
+        return "title " + getTarget() + " " + getPosition() + " " + JsonUtils.toJson(this);
     }
 }

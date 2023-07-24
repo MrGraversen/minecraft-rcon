@@ -3,9 +3,6 @@ package io.graversen.minecraft.rcon.commands;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Position;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
 
 public class TeleportCommand extends BaseTargetedCommand {
     private final String destination;
@@ -26,12 +23,6 @@ public class TeleportCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace(
-                "tp ${target} ${destination}",
-                Map.of(
-                        "target", getTarget(),
-                        "destination", getDestination()
-                )
-        );
+        return "tp " + getTarget() + " " + getDestination();
     }
 }

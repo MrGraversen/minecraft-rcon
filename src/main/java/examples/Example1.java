@@ -1,4 +1,4 @@
-package io.graversen.minecraft.rcon.examples;
+package examples;
 
 import io.graversen.minecraft.rcon.MinecraftRcon;
 import io.graversen.minecraft.rcon.commands.GameRulesCommands;
@@ -20,11 +20,12 @@ import java.time.Duration;
 import java.util.List;
 
 public class Example1 {
+
     public static void main(String[] args) {
 
         // Define a simple MinecraftRconService
         // Assuming Minecraft server is running on localhost and password set to "test"
-        // If no port is specified, the default Minecraft RCON port will be used
+        // If no port is specified, the default Minecraft RCON port will be used.
         final MinecraftRconService minecraftRconService = new MinecraftRconService(
                 RconDetails.localhost("test"),
                 ConnectOptions.defaults()
@@ -33,10 +34,10 @@ public class Example1 {
         // Let's go!
         minecraftRconService.connectBlocking(Duration.ofSeconds(3));
 
-        // After connecting, we can (crudely) fetch the underlying Minecraft RCON provider
+        // After connecting, we can (crudely) fetch the underlying Minecraft RCON provider.
         final MinecraftRcon minecraftRcon = minecraftRconService.minecraftRcon().orElseThrow(IllegalStateException::new);
 
-        // Build a TellRaw command - first half of the desired message
+        // Build a TellRaw command – first half of the desired message
         final TellRawCommand tellRawCommand1 = new TellRawCommandBuilder()
                 .targeting(Selectors.ALL_PLAYERS)
                 .withText("It's dangerous to go alone - ")
@@ -45,7 +46,7 @@ public class Example1 {
                 .build();
 
 
-        // Build another TellRaw command - other half of the message
+        // Build another TellRaw command – other half of the message
         final TellRawCommand tellRawCommand2 = new TellRawCommandBuilder()
                 .targeting(Selectors.ALL_PLAYERS)
                 .withText("Take this!")
@@ -53,11 +54,11 @@ public class Example1 {
                 .italic()
                 .build();
 
-        // We are able to transparently stitch together multiple 'tellraw' commands,
-        // combining their styles and texts into a composite viewing
+        // We can transparently stitch together multiple 'tellraw' commands,
+        // combining their styles and texts into a composite viewing.
         final TellRawCompositeCommand tellRawCompositeCommand = new TellRawCompositeCommand(List.of(tellRawCommand1, tellRawCommand2));
 
-        // Let's also add a nice title to the players' screens
+        // Let's also add a nice title to the players' screens.
         final TitleCommand titleCommand = new TitleCommandBuilder()
                 .targeting(Selectors.ALL_PLAYERS)
                 .atPosition(TitlePositions.TITLE)
@@ -65,7 +66,7 @@ public class Example1 {
                 .withText("Welcome!")
                 .build();
 
-        // We'll give everyone a diamond sword - it's dangerous without
+        // We'll give everyone a diamond sword – it is dangerous without.
         final GiveCommand giveCommand = new GiveCommand(
                 Target.selector(Selectors.ALL_PLAYERS), new MinecraftItem("diamond_sword"), null, 1
         );
@@ -75,12 +76,12 @@ public class Example1 {
 
         // Just for fun, let's also change some other things
 
-        // Set time of day to noon and clear weather - nice and sunny
+        // Set time of day to noon and clear weather – nice and sunny.
         final TimeCommand timeCommand = new TimeCommand(TimeLabels.NOON);
         final WeatherCommand weatherCommand = new WeatherCommand(Weathers.CLEAR, Duration.ofHours(1).toSeconds());
         minecraftRcon.sendAsync(timeCommand, weatherCommand);
 
-        // The players hate it when their creations are blown up by Creepers, lets' help them
+        // The players hate it when their creations are blown up by Creepers, lets' help them.
         final ICommand disableMobGriefing = GameRulesCommands.setGameRule(GameRules.MOB_GRIEFING, false);
         minecraftRcon.sendAsync(disableMobGriefing);
     }

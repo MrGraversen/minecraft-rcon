@@ -5,9 +5,5 @@ public enum ClickEventActions {
     OPEN_FILE,
     RUN_COMMAND,
     CHANGE_PAGE,
-    SUGGEST_COMMAND;
-
-    private String getCommandName() {
-        return name().toLowerCase();
-    }
+    SUGGEST_COMMAND
 }

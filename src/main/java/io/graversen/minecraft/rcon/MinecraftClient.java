@@ -1,18 +1,20 @@
 package io.graversen.minecraft.rcon;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Slf4j
+import static java.lang.System.Logger.Level.*;
+
 public class MinecraftClient implements IMinecraftClient {
+    private static final System.Logger log = System.getLogger(MinecraftClient.class.getName());
+
     private static final int RCON_AUTHENTICATION_FAILURE = -1;
     private static final int RCON_COMMAND = 2;
     private static final int RCON_AUTHENTICATION = 3;
@@ -30,7 +32,7 @@ public class MinecraftClient implements IMinecraftClient {
         this.currentRequestCounter = new AtomicInteger(1);
         this.executorService = Executors.newSingleThreadExecutor();
         this.isConnected = true;
-        log.info("Initialized with connection tuple '{}'", connectionTuple);
+        log.log(INFO, "Initialized with connection tuple '" + connectionTuple + "'");
     }
 
     public static MinecraftClient connect(String hostname, String password, int port) {
@@ -41,11 +43,12 @@ public class MinecraftClient implements IMinecraftClient {
             minecraftClient = new MinecraftClient(socketChannel, hostname, port);
 
             final Future<RconResponse> authenticateResponse = minecraftClient.authenticateClient(password);
-            final RconResponse rconResponse = authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
+            authenticateResponse.get(5000, TimeUnit.MILLISECONDS);
 
-            log.info("Connection success!");
+            log.log(INFO, "Connection success!");
             return minecraftClient;
         } catch (IOException | InterruptedException | ExecutionException e) {
+            if (e instanceof InterruptedException) Thread.currentThread().interrupt();
             if (minecraftClient != null) minecraftClient.safeClose();
             throw new RconConnectException(
                     e, "Connection to %s:%d failed: %s", hostname, port, e.getCause() != null ? e.getCause().getMessage() : e.getMessage()
@@ -62,7 +65,8 @@ public class MinecraftClient implements IMinecraftClient {
             sendRawSilently("ping").get(timeout.toSeconds(), TimeUnit.SECONDS);
             return true;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            log.error("Lost connection to {}", connectionTuple);
+            if (e instanceof InterruptedException) Thread.currentThread().interrupt();
+            log.log(ERROR, "Lost connection to " + connectionTuple);
             safeClose();
             return false;
         }
@@ -98,7 +102,7 @@ public class MinecraftClient implements IMinecraftClient {
             rconSocketChannel.write(bytesToSend);
 
             final String responseFromRcon = readResponse();
-            byte b = responseFromRcon.getBytes()[0];
+            byte b = responseFromRcon.isEmpty() ? 0 : responseFromRcon.getBytes()[0];
 
             final long requestEnd = System.currentTimeMillis();
             return new RconResponse(requestStart, requestEnd, requestId, b, responseFromRcon);
@@ -106,26 +110,27 @@ public class MinecraftClient implements IMinecraftClient {
     }
 
     private String readResponse() {
-        final int byteSize = readData(Integer.BYTES).getInt();
-        final ByteBuffer dataBytes = readData(byteSize - (2 * Byte.BYTES));
-        final ByteBuffer packageTailBytes = readData(2 * Byte.BYTES);
+        final int packetSize = readData(Integer.BYTES).getInt();
+        final ByteBuffer packetBytes = readData(packetSize);
 
-        final int responseId = dataBytes.getInt();
+        final int requestId = packetBytes.getInt();
+        packetBytes.getInt();
 
-        if (responseId == RCON_AUTHENTICATION_FAILURE) {
+        if (requestId == RCON_AUTHENTICATION_FAILURE) {
             throw new AuthenticationException();
         }
 
-        final byte byteOne = packageTailBytes.get(0);
-        final byte byteTwo = packageTailBytes.get(1);
+        final byte[] bodyBytes = new byte[packetBytes.remaining() - 2];
+        packetBytes.get(bodyBytes);
 
-        if (byteOne != 0 || byteTwo != 0) {
+        final byte nullByte1 = packetBytes.get();
+        final byte nullByte2 = packetBytes.get();
+
+        if (nullByte1 != 0 || nullByte2 != 0) {
             throw new RconCommandException("Expected two nil bytes at the end of response data");
         }
 
-        final byte[] dataBytesArray = new byte[dataBytes.remaining()];
-        dataBytes.get(dataBytesArray);
-        return new String(dataBytesArray);
+        return new String(bodyBytes, StandardCharsets.UTF_8);
     }
 
     private ByteBuffer readData(int bytes) {
@@ -178,11 +183,11 @@ public class MinecraftClient implements IMinecraftClient {
     }
 
     private Future<RconResponse> authenticateClient(String password) {
-        log.debug("Authenticating...");
+        log.log(DEBUG, "Authenticating...");
         return sendRaw(RCON_AUTHENTICATION, password, true);
     }
 
     private void printCommand(String rawCommand) {
-        log.debug("Sending command: {}", rawCommand);
+        log.log(DEBUG, "Sending command: " + rawCommand);
     }
 }

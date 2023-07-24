@@ -1,6 +1,7 @@
 package io.graversen.minecraft.rcon.util;
 
-import com.google.common.base.CaseFormat;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public enum GameRules {
     ANNOUNCE_ADVANCEMENTS,
@@ -28,6 +29,9 @@ public enum GameRules {
     SPECTATORS_GENERATE_CHUNKS;
 
     public String getGameRuleName() {
-        return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, name());
+        String upperCamel = Arrays.stream(name().split("_"))
+                .map(part -> part.charAt(0) + part.substring(1).toLowerCase())
+                .collect(Collectors.joining());
+        return Character.toLowerCase(upperCamel.charAt(0)) + upperCamel.substring(1);
     }
 }

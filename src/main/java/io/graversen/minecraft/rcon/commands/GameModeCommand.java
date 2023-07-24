@@ -3,9 +3,7 @@ package io.graversen.minecraft.rcon.commands;
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.GameModes;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class GameModeCommand extends BaseTargetedCommand {
@@ -22,12 +20,6 @@ public class GameModeCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace(
-                "gamemode ${gamemode} ${target}",
-                Map.of(
-                        "gamemode", getGameMode(),
-                        "target", getTarget()
-                )
-        );
+        return "gamemode " + getGameMode() + " " + getTarget();
     }
 }

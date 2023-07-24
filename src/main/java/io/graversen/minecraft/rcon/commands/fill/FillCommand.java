@@ -4,9 +4,7 @@ import io.graversen.minecraft.rcon.commands.base.Base3DPositionalCommand;
 import io.graversen.minecraft.rcon.util.Block;
 import io.graversen.minecraft.rcon.util.FillModes;
 import io.graversen.minecraft.rcon.util.Position;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class FillCommand extends Base3DPositionalCommand {
@@ -35,14 +33,11 @@ public class FillCommand extends Base3DPositionalCommand {
 
     @Override
     public String command() {
-        final var variables = Map.of(
-                "position1", getPosition1(),
-                "position2", getPosition2(),
-                "block", getBlock(),
-                "fillMode", getFillMode().getFillModesString(),
-                "replaceBlock", Objects.requireNonNullElse(getReplaceBlock(), "")
-        );
-
-        return StringSubstitutor.replace("fill ${position1} ${position2} ${block} ${fillMode} ${replaceBlock}", variables).trim();
+        return "fill " +
+                getPosition1() + " " +
+                getPosition2() + " " +
+                getBlock() + " " +
+                getFillMode().getFillModesString() + " " +
+                Objects.requireNonNullElse(getReplaceBlock(), "");
     }
 }

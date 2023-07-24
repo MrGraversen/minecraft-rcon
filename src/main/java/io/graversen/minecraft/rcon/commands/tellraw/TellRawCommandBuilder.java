@@ -10,7 +10,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     private boolean bold;
     private boolean italic;
     private boolean underlined;
-    private boolean striketrough;
+    private boolean strikethrough;
     private boolean obfuscated;
     private String color;
     private ClickEvent clickEvent;
@@ -54,7 +54,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     }
 
     public TellRawCommandBuilder strikethrough() {
-        this.striketrough = true;
+        this.strikethrough = true;
         return this;
     }
 
@@ -81,7 +81,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     @Override
     public TellRawCommand build() {
         if (validate()) {
-            return new TellRawCommand(target, text, bold, italic, underlined, striketrough, obfuscated, color, clickEvent, hoverEvent);
+            return new TellRawCommand(target, text, bold, italic, underlined, strikethrough, obfuscated, color, clickEvent, hoverEvent);
         } else {
             throw new IllegalArgumentException("Could not construct valid TellRaw Command");
         }
