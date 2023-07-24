@@ -1,21 +1,21 @@
 # minecraft-rcon
-[![](https://jitpack.io/v/MrGraversen/minecraft-rcon.svg)](https://jitpack.io/#MrGraversen/minecraft-rcon)
+[![](https://jitpack.io/v/WarningImHack3r/minecraft-rcon.svg)](https://jitpack.io/#WarningImHack3r/minecraft-rcon)
 
-A MineCraft RCON client in Java.
+A Minecraft RCON client in Java.
 
 ## About
-The client is made to eventually automate some administrative actions of a MineCraft server. Every MineCraft command is exposed over RCON, and made available using this client.
+The client is made to eventually automate some administrative actions of a Minecraft server. Every Minecraft command is exposed over RCON, and made available using this client.
 
 Some of the RCON commands are fairly complex in structure; this client will provide convenience methods and builders to help developers construct the correct commands to get the job done.
 
 The entire RCON command library is *not* implemented, but will be updated along the way. Feel free to PR and contribute with implementations of missing commands.
 
-This project will also provide some convenience code for working with the MineCraft target selectors (e.g. `@a` and so on), the 16 colors of the game, different labels (time of day, game rules, etc.) and other constants.
+This project will also provide some convenience code for working with the Minecraft target selectors (e.g. `@a` and so on), the 16 colors of the game, different labels (time of day, game rules, etc.) and other constants.
 
 Using the convenience methods will synchronously access the RCON stack, but it is also possible to send raw, asynchronous RCON messages.
 
 ### What is RCON?
-Originally invented by Valve for the Source Engine, it's a TCP/IP protocol for remote administration of game servers. The MineCraft RCON protocol is more-or-less an implementation of the Source Engine RCON protocol. It was introduced in beta update 1.9 prerelease 4.
+Originally invented by Valve for the Source Engine, it's a TCP/IP protocol for remote administration of game servers. The Minecraft RCON protocol is more-or-less an implementation of the Source Engine RCON protocol. It was introduced in beta update 1.9 prerelease 4.
 
 ## Install
 

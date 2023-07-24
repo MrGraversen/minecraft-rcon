@@ -33,11 +33,11 @@ public class FillCommand extends Base3DPositionalCommand {
 
     @Override
     public String command() {
-        return "fill " +
+        return ("fill " +
                 getPosition1() + " " +
                 getPosition2() + " " +
                 getBlock() + " " +
                 getFillMode().getFillModesString() + " " +
-                Objects.requireNonNullElse(getReplaceBlock(), "");
+                Objects.requireNonNullElse(getReplaceBlock(), "")).trim();
     }
 }
