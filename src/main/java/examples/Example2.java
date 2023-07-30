@@ -2,6 +2,7 @@ package examples;
 
 import io.graversen.minecraft.rcon.MinecraftRcon;
 import io.graversen.minecraft.rcon.RconResponse;
+import io.graversen.minecraft.rcon.commands.StopCommand;
 import io.graversen.minecraft.rcon.commands.base.ICommand;
 import io.graversen.minecraft.rcon.service.ConnectOptions;
 import io.graversen.minecraft.rcon.service.MinecraftRconService;
@@ -28,6 +29,8 @@ public class Example2 {
         RconResponse response = rcon.sendSync(command);
 
         System.out.println(response.getResponseString().replaceAll("§.", ""));
+
+        rcon.sendAsync(() -> System.out.println("Connection shutdown"), new StopCommand());
 
         connection.disconnect();
     }
