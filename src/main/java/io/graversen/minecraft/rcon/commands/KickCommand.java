@@ -10,7 +10,7 @@ public class KickCommand extends BaseTargetedCommand {
 
     public KickCommand(Target target, String reason) {
         super(target);
-        this.reason = Objects.requireNonNullElse(reason, "Kicked");
+        this.reason = Objects.requireNonNullElse(reason, "");
     }
 
     public String getReason() {
@@ -19,6 +19,6 @@ public class KickCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return "kick " + getTarget() + " " + getReason();
+        return ("kick " + getTarget() + " " + getReason()).trim();
     }
 }

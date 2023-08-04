@@ -10,7 +10,7 @@ public class BanCommand extends BaseTargetedCommand {
 
     public BanCommand(Target target, String reason) {
         super(target);
-        this.reason = Objects.requireNonNullElse(reason, "Banned");
+        this.reason = Objects.requireNonNullElse(reason, "");
     }
 
     public String getReason() {
@@ -19,6 +19,6 @@ public class BanCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return "ban " + getTarget() + " " + getReason();
+        return ("ban " + getTarget() + " " + getReason()).trim();
     }
 }
