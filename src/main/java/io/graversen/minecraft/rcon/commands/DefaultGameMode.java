@@ -1,14 +1,14 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.GameModes;
+import io.graversen.minecraft.rcon.util.GameMode;
 
 import java.util.Objects;
 
 public class DefaultGameMode implements ICommand {
-    private final GameModes gameMode;
+    private final GameMode gameMode;
 
-    public DefaultGameMode(GameModes gameMode) {
+    public DefaultGameMode(GameMode gameMode) {
         this.gameMode = Objects.requireNonNull(gameMode);
     }
 

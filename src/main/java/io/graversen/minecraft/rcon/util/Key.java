@@ -1,10 +1,10 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Keys {
+public enum Key {
     FORWARD,
     LEFT,
     BACK,
-    RGIHT,
+    RIGHT,
     JUMP,
     SNEAK,
     SPRINT,

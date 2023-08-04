@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Effects {
+public enum Effect {
     ABSORPTION,
     UNLUCK,
     BLINDNESS,

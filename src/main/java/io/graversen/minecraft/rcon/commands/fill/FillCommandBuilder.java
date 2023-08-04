@@ -2,7 +2,7 @@ package io.graversen.minecraft.rcon.commands.fill;
 
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.util.Block;
-import io.graversen.minecraft.rcon.util.FillModes;
+import io.graversen.minecraft.rcon.util.FillMode;
 import io.graversen.minecraft.rcon.util.Position;
 
 import java.util.Objects;
@@ -12,7 +12,7 @@ public class FillCommandBuilder implements ICommandBuilder<FillCommand> {
     private final Position position2;
     private Block block;
     private Block replaceBlock;
-    private FillModes fillMode;
+    private FillMode fillMode;
 
     private FillCommandBuilder(Position position1, Position position2) {
         this.position1 = position1;
@@ -28,38 +28,38 @@ public class FillCommandBuilder implements ICommandBuilder<FillCommand> {
 
     public FillCommand replace(Block block) {
         this.block = block;
-        this.fillMode = FillModes.REPLACE;
+        this.fillMode = FillMode.REPLACE;
         return build();
     }
 
     public FillCommand replace(Block block, Block replaceBlock) {
         this.block = block;
         this.replaceBlock = replaceBlock;
-        this.fillMode = FillModes.REPLACE;
+        this.fillMode = FillMode.REPLACE;
         return build();
     }
 
     public FillCommand outline(Block block) {
         this.block = block;
-        this.fillMode = FillModes.OUTLINE;
+        this.fillMode = FillMode.OUTLINE;
         return build();
     }
 
     public FillCommand keep(Block block) {
         this.block = block;
-        this.fillMode = FillModes.KEEP;
+        this.fillMode = FillMode.KEEP;
         return build();
     }
 
     public FillCommand hollow(Block block) {
         this.block = block;
-        this.fillMode = FillModes.HOLLOW;
+        this.fillMode = FillMode.HOLLOW;
         return build();
     }
 
     public FillCommand destroy(Block block) {
         this.block = block;
-        this.fillMode = FillModes.DESTROY;
+        this.fillMode = FillMode.DESTROY;
         return build();
     }
 

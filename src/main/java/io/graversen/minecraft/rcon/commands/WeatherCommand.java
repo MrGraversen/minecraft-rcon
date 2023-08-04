@@ -1,15 +1,15 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.Weathers;
+import io.graversen.minecraft.rcon.util.Weather;
 
 import java.time.Duration;
 import java.util.Objects;
 
-public record WeatherCommand(Weathers weather, long duration) implements ICommand {
+public record WeatherCommand(Weather weather, long duration) implements ICommand {
     static final long DEFAULT_DURATION = Duration.ofMinutes(5).toSeconds();
 
-    public WeatherCommand(Weathers weather, long duration) {
+    public WeatherCommand(Weather weather, long duration) {
         this.weather = Objects.requireNonNull(weather);
 
         if (duration > 1_000_000 || duration <= 0) {

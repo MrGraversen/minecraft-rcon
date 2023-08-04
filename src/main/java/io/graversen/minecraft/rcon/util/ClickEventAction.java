@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum ClickEventActions {
+public enum ClickEventAction {
     OPEN_URL,
     OPEN_FILE,
     RUN_COMMAND,

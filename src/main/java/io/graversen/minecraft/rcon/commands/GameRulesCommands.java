@@ -1,18 +1,18 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.GameRules;
+import io.graversen.minecraft.rcon.util.GameRule;
 
 import java.util.Objects;
 
 public class GameRulesCommands {
     private GameRulesCommands() {}
 
-    public static ICommand setGameRule(GameRules gameRule, int value) {
+    public static ICommand setGameRule(GameRule gameRule, int value) {
         return setGameRule(gameRule.getGameRuleName(), String.valueOf(value));
     }
 
-    public static ICommand setGameRule(GameRules gameRule, boolean value) {
+    public static ICommand setGameRule(GameRule gameRule, boolean value) {
         return setGameRule(gameRule.getGameRuleName(), String.valueOf(value));
     }
 

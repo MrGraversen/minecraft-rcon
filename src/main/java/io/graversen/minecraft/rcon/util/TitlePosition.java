@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum TitlePositions {
+public enum TitlePosition {
     TITLE,
     SUBTITLE,
     ACTIONBAR;

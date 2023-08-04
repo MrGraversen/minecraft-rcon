@@ -39,7 +39,7 @@ public class Example1 {
 
         // Build a TellRaw command – first half of the desired message
         final TellRawCommand tellRawCommand1 = new TellRawCommandBuilder()
-                .targeting(Selectors.ALL_PLAYERS)
+                .targeting(Selector.ALL_PLAYERS)
                 .withText("It's dangerous to go alone - ")
                 .withColor(Colors.GRAY)
                 .italic()
@@ -48,7 +48,7 @@ public class Example1 {
 
         // Build another TellRaw command – other half of the message
         final TellRawCommand tellRawCommand2 = new TellRawCommandBuilder()
-                .targeting(Selectors.ALL_PLAYERS)
+                .targeting(Selector.ALL_PLAYERS)
                 .withText("Take this!")
                 .withColor(Colors.DARK_AQUA)
                 .italic()
@@ -60,15 +60,15 @@ public class Example1 {
 
         // Let's also add a nice title to the players' screens.
         final TitleCommand titleCommand = new TitleCommandBuilder()
-                .targeting(Selectors.ALL_PLAYERS)
-                .atPosition(TitlePositions.TITLE)
+                .targeting(Selector.ALL_PLAYERS)
+                .atPosition(TitlePosition.TITLE)
                 .withColor(Colors.GREEN)
                 .withText("Welcome!")
                 .build();
 
         // We'll give everyone a diamond sword – it is dangerous without.
         final GiveCommand giveCommand = new GiveCommand(
-                Target.selector(Selectors.ALL_PLAYERS), new MinecraftItem("diamond_sword"), null, 1
+                Target.selector(Selector.ALL_PLAYERS), new MinecraftItem("diamond_sword"), null, 1
         );
 
         // Fire away!
@@ -77,12 +77,12 @@ public class Example1 {
         // Just for fun, let's also change some other things
 
         // Set time of day to noon and clear weather – nice and sunny.
-        final TimeCommand timeCommand = new TimeCommand(TimeLabels.NOON);
-        final WeatherCommand weatherCommand = new WeatherCommand(Weathers.CLEAR, Duration.ofHours(1).toSeconds());
+        final TimeCommand timeCommand = new TimeCommand(TimeLabel.NOON);
+        final WeatherCommand weatherCommand = new WeatherCommand(Weather.CLEAR, Duration.ofHours(1).toSeconds());
         minecraftRcon.sendAsync(timeCommand, weatherCommand);
 
         // The players hate it when their creations are blown up by Creepers, lets' help them.
-        final ICommand disableMobGriefing = GameRulesCommands.setGameRule(GameRules.MOB_GRIEFING, false);
+        final ICommand disableMobGriefing = GameRulesCommands.setGameRule(GameRule.MOB_GRIEFING, false);
         minecraftRcon.sendAsync(disableMobGriefing);
     }
 }

@@ -1,8 +1,8 @@
 package io.graversen.minecraft.rcon.commands.execute;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.Dimensions;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Dimension;
+import io.graversen.minecraft.rcon.util.Selector;
 
 public class ExecuteCommandBuilders {
     private ExecuteCommandBuilders() {}
@@ -11,11 +11,11 @@ public class ExecuteCommandBuilders {
         return new ExecuteAtCommandBuilder(playerName);
     }
 
-    public static ExecuteAtCommandBuilder executeAt(Selectors selector) {
+    public static ExecuteAtCommandBuilder executeAt(Selector selector) {
         return new ExecuteAtCommandBuilder(selector.getSelectorString());
     }
 
-    public static ExecuteInCommandBuilder executeIn(Dimensions dimension) {
+    public static ExecuteInCommandBuilder executeIn(Dimension dimension) {
         return new ExecuteInCommandBuilder(dimension);
     }
 
@@ -38,13 +38,13 @@ public class ExecuteCommandBuilders {
     }
 
     public static class ExecuteInCommandBuilder {
-        private final Dimensions dimension;
+        private final Dimension dimension;
 
-        ExecuteInCommandBuilder(Dimensions dimension) {
+        ExecuteInCommandBuilder(Dimension dimension) {
             this.dimension = dimension;
         }
 
-        public Dimensions getDimension() {
+        public Dimension getDimension() {
             return dimension;
         }
 

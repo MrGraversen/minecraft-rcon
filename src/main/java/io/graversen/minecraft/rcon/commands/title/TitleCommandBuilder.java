@@ -3,9 +3,9 @@ package io.graversen.minecraft.rcon.commands.title;
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
 import io.graversen.minecraft.rcon.util.Colors;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Selector;
 import io.graversen.minecraft.rcon.util.Target;
-import io.graversen.minecraft.rcon.util.TitlePositions;
+import io.graversen.minecraft.rcon.util.TitlePosition;
 
 public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleCommandBuilder>, ICommandBuilder<TitleCommand> {
     private Target target;
@@ -25,12 +25,12 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     }
 
     @Override
-    public TitleCommandBuilder targeting(Selectors usingSelector) {
+    public TitleCommandBuilder targeting(Selector usingSelector) {
         this.target = Target.selector(usingSelector);
         return this;
     }
 
-    public TitleCommandBuilder atPosition(TitlePositions titlePosition) {
+    public TitleCommandBuilder atPosition(TitlePosition titlePosition) {
         this.position = titlePosition.getTitlePositionValue();
         return this;
     }

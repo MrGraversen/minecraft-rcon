@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Weathers {
+public enum Weather {
     CLEAR,
     RAIN,
     THUNDER;

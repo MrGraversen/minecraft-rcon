@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum TimeLabels {
+public enum TimeLabel {
     DAY(1000),
     NIGHT(13000),
     NOON(6000),
@@ -8,7 +8,7 @@ public enum TimeLabels {
 
     private final int timeValue;
 
-    TimeLabels(int timeValue) {
+    TimeLabel(int timeValue) {
         this.timeValue = timeValue;
     }
 

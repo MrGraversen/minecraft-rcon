@@ -23,7 +23,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     }
 
     @Override
-    public TellRawCommandBuilder targeting(Selectors usingSelector) {
+    public TellRawCommandBuilder targeting(Selector usingSelector) {
         this.target = Target.selector(usingSelector);
         return this;
     }
@@ -63,13 +63,13 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
         return this;
     }
 
-    public TellRawCommandBuilder withClickEvent(ClickEventActions clickEventAction, String value) {
+    public TellRawCommandBuilder withClickEvent(ClickEventAction clickEventAction, String value) {
         this.clickEvent = new ClickEvent(clickEventAction.name().toLowerCase(), value);
         return this;
     }
 
     public TellRawCommandBuilder withHoverTextEvent(TellRawCommand tellRawCommand) {
-        this.hoverEvent = new HoverEvent(HoverEventActions.SHOW_TEXT.name().toLowerCase(), new TextContent[]{tellRawCommand.toTextContent()});
+        this.hoverEvent = new HoverEvent(HoverEventAction.SHOW_TEXT.name().toLowerCase(), new TextContent[]{tellRawCommand.toTextContent()});
         return this;
     }
 

@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum GameModes {
+public enum GameMode {
     SURVIVAL,
     CREATIVE,
     ADVENTURE,

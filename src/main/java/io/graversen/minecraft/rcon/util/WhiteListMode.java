@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum WhiteListModes {
+public enum WhiteListMode {
     ADD,
     LIST,
     OFF,

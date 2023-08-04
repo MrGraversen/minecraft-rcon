@@ -3,7 +3,7 @@ package io.graversen.minecraft.rcon.util;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public enum GameRules {
+public enum GameRule {
     ANNOUNCE_ADVANCEMENTS,
     COMMAND_BLOCK_OUTPUT,
     DISABLE_ELYTRA_MOVEMENT_CHECK,

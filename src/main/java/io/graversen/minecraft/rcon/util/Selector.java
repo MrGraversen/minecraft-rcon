@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Selectors {
+public enum Selector {
     ALL_PLAYERS("@a"),
     RANDOM_PLAYER("@r"),
     NEAREST_PLAYER("@p"),
@@ -8,7 +8,7 @@ public enum Selectors {
 
     private final String selectorString;
 
-    Selectors(String selectorString) {
+    Selector(String selectorString) {
         this.selectorString = selectorString;
     }
 

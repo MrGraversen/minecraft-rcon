@@ -8,6 +8,6 @@ class GameRulesTest {
 
     @Test
     void getGameRuleName() {
-        assertEquals("mobGriefing", GameRules.MOB_GRIEFING.getGameRuleName());
+        assertEquals("mobGriefing", GameRule.MOB_GRIEFING.getGameRuleName());
     }
 }
