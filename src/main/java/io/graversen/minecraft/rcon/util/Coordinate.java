@@ -5,14 +5,14 @@ import io.graversen.minecraft.rcon.Defaults;
 import java.util.Objects;
 
 public class Coordinate {
-    private final String theCoordinate;
+    private final String coordinate;
 
     private Coordinate(String coordinate) {
-        this.theCoordinate = Objects.requireNonNull(coordinate);
+        this.coordinate = Objects.requireNonNull(coordinate);
     }
 
     public String coordinate() {
-        return theCoordinate;
+        return coordinate;
     }
 
     public static Coordinate simple(long coordinate) {

@@ -54,7 +54,7 @@ Once done, RCON is available using this client.
 
 ## Example 1
 
-The example is also available in the [`Example1.java`](src/main/java/examples/Example1.java) class.
+The example is also available in the [`Example1.java`](src/main/java/examples/Example1.java) class. Other examples are available in the [`examples`](src/main/java/examples) folder.
 
 ```java
 // Define a simple MinecraftRconService

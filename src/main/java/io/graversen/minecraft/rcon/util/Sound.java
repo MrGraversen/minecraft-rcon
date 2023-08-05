@@ -2,15 +2,15 @@ package io.graversen.minecraft.rcon.util;
 
 public class Sound {
     private final String namespace;
-    private final String theSound;
+    private final String sound;
 
     public Sound(String namespace, String sound) {
         this.namespace = namespace;
-        this.theSound = sound;
+        this.sound = sound;
     }
 
     @Override
     public String toString() {
-        return String.format("%s:%s", namespace, theSound);
+        return String.format("%s:%s", namespace,sound);
     }
 }
