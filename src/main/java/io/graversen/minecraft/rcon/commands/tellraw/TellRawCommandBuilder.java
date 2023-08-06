@@ -28,7 +28,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
         return this;
     }
 
-    public TellRawCommandBuilder withColor(Colors color) {
+    public TellRawCommandBuilder withColor(Color color) {
         this.color = color.getColorName();
         return this;
     }

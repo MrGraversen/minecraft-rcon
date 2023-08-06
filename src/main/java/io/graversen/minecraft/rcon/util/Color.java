@@ -1,6 +1,6 @@
 package io.graversen.minecraft.rcon.util;
 
-public enum Colors {
+public enum Color {
     BLACK,
     DARK_BLUE,
     DARK_GREEN,
@@ -14,6 +14,8 @@ public enum Colors {
     GREEN,
     AQUA,
     RED,
+    PINK,
+    PURPLE,
     LIGHT_PURPLE,
     YELLOW,
     WHITE;

@@ -41,7 +41,7 @@ public class Example1 {
         final TellRawCommand tellRawCommand1 = new TellRawCommandBuilder()
                 .targeting(Selector.ALL_PLAYERS)
                 .withText("It's dangerous to go alone - ")
-                .withColor(Colors.GRAY)
+                .withColor(Color.GRAY)
                 .italic()
                 .build();
 
@@ -50,7 +50,7 @@ public class Example1 {
         final TellRawCommand tellRawCommand2 = new TellRawCommandBuilder()
                 .targeting(Selector.ALL_PLAYERS)
                 .withText("Take this!")
-                .withColor(Colors.DARK_AQUA)
+                .withColor(Color.DARK_AQUA)
                 .italic()
                 .build();
 
@@ -62,7 +62,7 @@ public class Example1 {
         final TitleCommand titleCommand = new TitleCommandBuilder()
                 .targeting(Selector.ALL_PLAYERS)
                 .atPosition(TitlePosition.TITLE)
-                .withColor(Colors.GREEN)
+                .withColor(Color.GREEN)
                 .withText("Welcome!")
                 .build();
 

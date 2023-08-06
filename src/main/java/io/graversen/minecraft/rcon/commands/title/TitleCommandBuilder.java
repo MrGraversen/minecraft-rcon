@@ -2,7 +2,7 @@ package io.graversen.minecraft.rcon.commands.title;
 
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.util.Colors;
+import io.graversen.minecraft.rcon.util.Color;
 import io.graversen.minecraft.rcon.util.Selector;
 import io.graversen.minecraft.rcon.util.Target;
 import io.graversen.minecraft.rcon.util.TitlePosition;
@@ -35,7 +35,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
         return this;
     }
 
-    public TitleCommandBuilder withColor(Colors color) {
+    public TitleCommandBuilder withColor(Color color) {
         this.color = color.getColorName();
         return this;
     }
