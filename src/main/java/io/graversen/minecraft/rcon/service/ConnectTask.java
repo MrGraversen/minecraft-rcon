@@ -3,12 +3,14 @@ package io.graversen.minecraft.rcon.service;
 import io.graversen.minecraft.rcon.MinecraftClient;
 import io.graversen.minecraft.rcon.RconConnectException;
 
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import java.util.concurrent.Callable;
 
 import static java.lang.System.Logger.Level.*;
 
 class ConnectTask implements Callable<MinecraftClient> {
-    private static final System.Logger log = System.getLogger(ConnectTask.class.getName());
+    private static final Logger log = System.getLogger(ConnectTask.class.getName());
 
     private final ConnectOptions connectOptions;
     private final RconDetails rconDetails;
@@ -35,7 +37,7 @@ class ConnectTask implements Callable<MinecraftClient> {
                 if (currentAttempt < connectOptions.maxRetries()) {
                     sleep();
                 } else {
-                    log.log(WARNING ,"Ran out of retries after " + currentAttempt + " total attempts");
+                    log.log(WARNING,"Ran out of retries after " + currentAttempt + " total attempts");
                 }
             }
         }
@@ -48,8 +50,8 @@ class ConnectTask implements Callable<MinecraftClient> {
             log.log(DEBUG, "Pausing for " + connectOptions.timeBetweenRetries().toMillis() + " ms");
             Thread.sleep(connectOptions.timeBetweenRetries().toMillis());
         } catch (InterruptedException e) {
-            e.printStackTrace();
             Thread.currentThread().interrupt();
+            log.log(Level.ERROR, "Interrupted while sleeping", e);
         }
     }
 }

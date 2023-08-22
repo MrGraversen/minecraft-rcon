@@ -1,5 +1,6 @@
 package io.graversen.minecraft.rcon;
 
+import io.graversen.minecraft.rcon.commands.SaveAllCommand;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

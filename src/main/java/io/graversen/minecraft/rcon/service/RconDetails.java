@@ -22,9 +22,8 @@ public record RconDetails(String hostname, int port, String password) {
     @Override
     public String toString() {
         return "RconDetails{" +
-                "hostname='" + hostname + '\'' +
+                "hostname='" + hostname + "'" +
                 ", port=" + port +
-                ", password='" + "******" + '\'' +
-                '}';
+                ", password='******'}";
     }
 }

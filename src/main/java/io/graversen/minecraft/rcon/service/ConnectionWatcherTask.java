@@ -15,11 +15,7 @@ class ConnectionWatcherTask implements Runnable {
         final LocalDateTime start = LocalDateTime.now();
         final boolean isConnected = connectionWatcher.onTestConnection();
 
-        if (isConnected) {
-            connectionWatcher.onPingResult(pingResult(start, true));
-        } else {
-            connectionWatcher.onPingResult(pingResult(start, false));
-        }
+        connectionWatcher.onPingResult(pingResult(start, isConnected));
     }
 
     private PingResult pingResult(LocalDateTime start, boolean success) {
