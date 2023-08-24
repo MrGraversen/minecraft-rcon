@@ -8,15 +8,15 @@ public class BanListCommand implements ICommand {
     private final BanListType banListType;
 
     public enum BanListType {
-        IPS, PLAYERS, EMPTY;
+        IPS, PLAYERS, ALL;
 
         public String getBanListType() {
-            return this == EMPTY ? "" : name().toLowerCase();
+            return this == ALL ? "" : name().toLowerCase();
         }
     }
 
     public BanListCommand() {
-        this(BanListType.EMPTY);
+        this(BanListType.ALL);
     }
 
     public BanListCommand(BanListType banListType) {
