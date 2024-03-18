@@ -152,10 +152,10 @@ public class MinecraftClient implements IMinecraftClient {
 
     private ByteBuffer createRconByteBuffer(int requestCount, int requestType, String command) {
         // In accordance with the RCON format: Length + Request ID + Type + Payload + Two nil bytes
-        ByteBuffer byteBuffer = ByteBuffer.allocate((3 * Integer.BYTES) + command.length() + (2 * Byte.BYTES));
+        ByteBuffer byteBuffer = ByteBuffer.allocate((3 * Integer.BYTES) + command.getBytes().length + (2 * Byte.BYTES));
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
 
-        byteBuffer.putInt((2 * Integer.BYTES) + command.length() + (2 * Byte.BYTES));
+        byteBuffer.putInt((2 * Integer.BYTES) + command.getBytes().length + (2 * Byte.BYTES));
         byteBuffer.putInt(requestCount);
         byteBuffer.putInt(requestType);
         byteBuffer.put(command.getBytes());
