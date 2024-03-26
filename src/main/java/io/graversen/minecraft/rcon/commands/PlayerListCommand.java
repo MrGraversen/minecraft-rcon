@@ -1,9 +1,6 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
 
 public class PlayerListCommand implements ICommand {
     private final boolean uuids;
@@ -22,6 +19,6 @@ public class PlayerListCommand implements ICommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace("list ${option}", Map.of("option", uuids ? "uuids" : "")).trim();
+        return uuids ? "list uuids" : "list";
     }
 }

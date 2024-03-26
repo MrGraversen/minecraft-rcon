@@ -5,7 +5,7 @@ import io.graversen.minecraft.rcon.util.Target;
 import java.util.Objects;
 
 public abstract class BaseTargetedCommand implements ICommand {
-    private transient final Target target;
+    private final transient Target target;
 
     public BaseTargetedCommand(Target target) {
         this.target = Objects.requireNonNull(target);

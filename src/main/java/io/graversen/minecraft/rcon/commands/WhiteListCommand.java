@@ -1,44 +1,35 @@
 package io.graversen.minecraft.rcon.commands;
 
-import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
+import io.graversen.minecraft.rcon.commands.base.ICommand;
 import io.graversen.minecraft.rcon.util.Target;
-import io.graversen.minecraft.rcon.util.WhiteListModes;
-import org.apache.commons.text.StringSubstitutor;
+import io.graversen.minecraft.rcon.util.WhiteListMode;
 
-import java.util.Map;
 import java.util.Objects;
 
-public class WhiteListCommand extends BaseTargetedCommand {
-    private final WhiteListModes whiteListMode;
+public class WhiteListCommand implements ICommand {
+    private final Target target;
+    private final WhiteListMode.Value whiteListMode;
 
-    public WhiteListCommand(Target target, WhiteListModes whiteListMode) {
-        super(target);
+    public WhiteListCommand(Target target, WhiteListMode.Targeted whiteListMode) {
+        this.target = Objects.requireNonNull(target);
         this.whiteListMode = Objects.requireNonNull(whiteListMode);
     }
 
-    public WhiteListModes getWhiteListMode() {
+    public WhiteListCommand(WhiteListMode.Management whiteListMode) {
+        this.target = null;
+        this.whiteListMode = Objects.requireNonNull(whiteListMode);
+    }
+
+    public WhiteListMode.Value getWhiteListMode() {
         return whiteListMode;
     }
 
     @Override
     public String command() {
-        switch (getWhiteListMode()) {
-            case ADD:
-            case REMOVE:
-                return StringSubstitutor.replace(
-                        "whitelist ${mode} ${target}",
-                        Map.of(
-                                "mode", getWhiteListMode().getModeName(),
-                                "target", getTarget()
-                        )
-                );
-            case LIST:
-            case OFF:
-            case ON:
-            case RELOAD:
-                return "whitelist " + getWhiteListMode().getModeName();
-            default:
-                throw new UnsupportedOperationException("Unsupported whitelist mode: " + getWhiteListMode());
-        }
+        return switch (whiteListMode) {
+            case WhiteListMode.Targeted targeted -> "whitelist " + targeted.getModeName() + " " + target;
+            case WhiteListMode.Management management -> "whitelist " + management.getModeName();
+            default -> throw new IllegalStateException("Unexpected value: " + whiteListMode);
+        };
     }
 }

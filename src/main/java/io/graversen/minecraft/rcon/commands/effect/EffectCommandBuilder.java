@@ -2,8 +2,8 @@ package io.graversen.minecraft.rcon.commands.effect;
 
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.util.Effects;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Effect;
+import io.graversen.minecraft.rcon.util.Selector;
 import io.graversen.minecraft.rcon.util.Target;
 
 public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectCommandBuilder>, ICommandBuilder<EffectCommand> {
@@ -14,7 +14,7 @@ public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectComm
     private int amplifier = 1;
     private boolean hideParticles;
 
-    public EffectCommand clearAllEffects(Selectors usingSelector) {
+    public EffectCommand clearAllEffects(Selector usingSelector) {
         this.clear = "clear";
         this.targeting(usingSelector);
         return build();
@@ -33,12 +33,12 @@ public class EffectCommandBuilder implements ITargetingCommandBuilder<EffectComm
     }
 
     @Override
-    public EffectCommandBuilder targeting(Selectors usingSelector) {
+    public EffectCommandBuilder targeting(Selector usingSelector) {
         this.target = Target.selector(usingSelector);
         return this;
     }
 
-    public EffectCommandBuilder withEffect(Effects effect, int amplifier) {
+    public EffectCommandBuilder withEffect(Effect effect, int amplifier) {
         this.effect = effect.getEffectName();
         this.amplifier = amplifier;
         return this;

@@ -11,6 +11,6 @@ public class Sound {
 
     @Override
     public String toString() {
-        return String.format("%s:%s", namespace, sound);
+        return String.format("%s:%s", namespace,sound);
     }
 }

@@ -34,7 +34,7 @@ public class PlayerNamesMapper implements IRconResponseMapper<PlayerNames> {
         final var players = Arrays.stream(playersRaw.split(PATTERN_PLAYERS.pattern()))
                 .map(playerRaw -> playerRaw.replaceAll(PATTERN_INSIDE_PARENTHESIS.pattern(), ""))
                 .map(String::trim)
-                .collect(Collectors.toUnmodifiableList());
+                .toList();
 
         return new PlayerNames(players);
     }

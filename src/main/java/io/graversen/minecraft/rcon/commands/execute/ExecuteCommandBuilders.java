@@ -1,27 +1,21 @@
 package io.graversen.minecraft.rcon.commands.execute;
 
-import io.graversen.minecraft.rcon.commands.base.BasePositionalCommand;
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.Dimensions;
-import io.graversen.minecraft.rcon.util.Selectors;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
+import io.graversen.minecraft.rcon.util.Dimension;
+import io.graversen.minecraft.rcon.util.Selector;
 
 public class ExecuteCommandBuilders {
-    private ExecuteCommandBuilders() {
-
-    }
+    private ExecuteCommandBuilders() {}
 
     public static ExecuteAtCommandBuilder executeAt(String playerName) {
         return new ExecuteAtCommandBuilder(playerName);
     }
 
-    public static ExecuteAtCommandBuilder executeAt(Selectors selector) {
+    public static ExecuteAtCommandBuilder executeAt(Selector selector) {
         return new ExecuteAtCommandBuilder(selector.getSelectorString());
     }
 
-    public static ExecuteInCommandBuilder executeIn(Dimensions dimension) {
+    public static ExecuteInCommandBuilder executeIn(Dimension dimension) {
         return new ExecuteInCommandBuilder(dimension);
     }
 
@@ -37,37 +31,25 @@ public class ExecuteCommandBuilders {
         }
 
         public ExecuteCommand run(ICommand command) {
-            final String compiledCommand = StringSubstitutor.replace(
-                    "execute at ${target} run ${command}",
-                    Map.of(
-                            "target", getTarget(),
-                            "command", command.command()
-                    )
-            );
+            final String compiledCommand = "execute at " + getTarget() + " run " + command.command();
 
             return new ExecuteCommand(() -> compiledCommand);
         }
     }
 
     public static class ExecuteInCommandBuilder {
-        private final Dimensions dimension;
+        private final Dimension dimension;
 
-        ExecuteInCommandBuilder(Dimensions dimension) {
+        ExecuteInCommandBuilder(Dimension dimension) {
             this.dimension = dimension;
         }
 
-        public Dimensions getDimension() {
+        public Dimension getDimension() {
             return dimension;
         }
 
         public ExecuteCommand run(ICommand command) {
-            final String compiledCommand = StringSubstitutor.replace(
-                    "execute in ${dimension} run ${command}",
-                    Map.of(
-                            "dimension", getDimension().getNamespacedDimensionString(),
-                            "command", command.command()
-                    )
-            );
+            final String compiledCommand = "execute in " + getDimension().getNamespacedDimensionString() + " run " + command.command();
 
             return new ExecuteCommand(() -> compiledCommand);
         }

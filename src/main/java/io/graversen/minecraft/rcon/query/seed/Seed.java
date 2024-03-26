@@ -7,7 +7,7 @@ public class Seed {
         this.seed = seed;
     }
 
-    public String getSeed() {
+    public String getTheSeed() {
         return seed;
     }
 }

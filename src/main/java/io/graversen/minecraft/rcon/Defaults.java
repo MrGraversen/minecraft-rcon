@@ -10,7 +10,5 @@ public final class Defaults {
     public static final int WORLD_BOUND_MAX = 30_000_000;
     public static final int WORLD_BOUND_MIN = -30_000_000;
 
-    private Defaults() {
-
-    }
+    private Defaults() {}
 }

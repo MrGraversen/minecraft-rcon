@@ -2,9 +2,6 @@ package io.graversen.minecraft.rcon.commands.effect;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
-
-import java.util.Map;
 
 public class EffectCommand extends BaseTargetedCommand {
     private final String clear;
@@ -45,20 +42,13 @@ public class EffectCommand extends BaseTargetedCommand {
     @Override
     public String command() {
         if (getClear().isEmpty()) {
-            String partialCommand = "effect ${target} ${effect} ${seconds}";
-            if (getAmplifier() > 0) partialCommand = partialCommand + " ${amplifier}";
-            if (isHideParticles()) partialCommand = partialCommand + " ${hideParticles}";
+            String partialCommand = "effect " + getTarget() + " " + getEffect() + " " + getSeconds();
+            if (getAmplifier() > 0) partialCommand += " " + getAmplifier();
+            if (isHideParticles()) partialCommand += " " + isHideParticles();
 
-            final var variables = Map.of(
-                    "target", getTarget(),
-                    "effect", getEffect(),
-                    "seconds", String.valueOf(getSeconds()),
-                    "amplifier", String.valueOf(getAmplifier()),
-                    "hideParticles", String.valueOf(isHideParticles())
-            );
-            return StringSubstitutor.replace(partialCommand, variables);
+            return partialCommand;
         } else {
-            return StringSubstitutor.replace("effect ${target} clear", Map.of("target", getTarget()));
+            return "effect " + getTarget() + " clear";
         }
     }
 }

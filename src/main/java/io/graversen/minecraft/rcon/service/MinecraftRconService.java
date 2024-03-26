@@ -2,7 +2,6 @@ package io.graversen.minecraft.rcon.service;
 
 import io.graversen.minecraft.rcon.IMinecraftClient;
 import io.graversen.minecraft.rcon.MinecraftRcon;
-import lombok.extern.slf4j.Slf4j;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -11,8 +10,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
+import static java.lang.System.Logger.Level.INFO;
+import static java.lang.System.Logger.Level.WARNING;
+
 public class MinecraftRconService implements IMinecraftRconService {
+    private static final System.Logger log = System.getLogger(MinecraftRconService.class.getName());
+
     private final RconDetails rconDetails;
     private final ConnectOptions connectOptions;
     private final ScheduledExecutorService executorService;
@@ -24,7 +27,7 @@ public class MinecraftRconService implements IMinecraftRconService {
     private volatile boolean shouldConnect;
     private volatile boolean isConnected;
 
-    private volatile CountDownLatch connectionLatch;
+    private CountDownLatch connectionLatch;
 
     public MinecraftRconService(RconDetails rconDetails, ConnectOptions connectOptions) {
         this.rconDetails = rconDetails;
@@ -40,9 +43,9 @@ public class MinecraftRconService implements IMinecraftRconService {
         } else {
             try {
                 connect();
-                connectionLatch.await(timeout.toSeconds(), TimeUnit.SECONDS);
-                return true;
+                return connectionLatch.await(timeout.toSeconds(), TimeUnit.SECONDS);
             } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 return false;
             }
         }
@@ -75,7 +78,7 @@ public class MinecraftRconService implements IMinecraftRconService {
 
     private void safeClose(String reason) {
         try {
-            log.info("Closing with reason: {}", reason);
+            log.log(INFO, "Closing with reason: " + reason);
             isConnected = false;
 
             if (minecraftClient != null) {
@@ -102,9 +105,9 @@ public class MinecraftRconService implements IMinecraftRconService {
 
             @Override
             public void onPingResult(PingResult pingResult) {
-                if (!pingResult.isSuccess() && shouldConnect) {
+                if (!pingResult.success() && shouldConnect) {
                     if (isConnected) {
-                        log.warn("Connection broken - resetting");
+                        log.log(WARNING, "Connection broken - resetting");
                         isConnected = false;
                         minecraftClient = null;
                         minecraftRcon = null;
@@ -127,7 +130,7 @@ public class MinecraftRconService implements IMinecraftRconService {
     }
 
     private void startConnectionWatcher() {
-        final long intervalSeconds = connectOptions.getConnectionWatcherInterval().toSeconds();
+        final long intervalSeconds = connectOptions.connectionWatcherInterval().toSeconds();
         final Runnable watcherTask = new ConnectionWatcherTask(connectionWatcher());
         executorService.scheduleWithFixedDelay(watcherTask, intervalSeconds, intervalSeconds, TimeUnit.SECONDS);
     }

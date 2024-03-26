@@ -1,7 +1,7 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.ICommand;
-import io.graversen.minecraft.rcon.util.TimeLabels;
+import io.graversen.minecraft.rcon.util.TimeLabel;
 
 public class TimeCommand implements ICommand {
     private final int time;
@@ -10,7 +10,7 @@ public class TimeCommand implements ICommand {
         this.time = time;
     }
 
-    public TimeCommand(TimeLabels timeLabel){
+    public TimeCommand(TimeLabel timeLabel){
         this(timeLabel.timeValue());
     }
 

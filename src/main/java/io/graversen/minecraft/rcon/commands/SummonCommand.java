@@ -2,9 +2,7 @@ package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BasePositionalCommand;
 import io.graversen.minecraft.rcon.util.Position;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class SummonCommand extends BasePositionalCommand {
@@ -27,13 +25,6 @@ public class SummonCommand extends BasePositionalCommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace(
-                "summon ${entityName} ${position} ${nbt}",
-                Map.of(
-                        "entityName", getEntityName(),
-                        "position", getPosition().toString(),
-                        "nbt", getNbt()
-                )
-        );
+        return "summon " + getEntityName() + " " + getPosition() + " " + getNbt();
     }
 }

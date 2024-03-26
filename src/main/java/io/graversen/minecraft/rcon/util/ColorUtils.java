@@ -1,29 +1,30 @@
 package io.graversen.minecraft.rcon.util;
 
-import lombok.experimental.UtilityClass;
-
-@UtilityClass
 public class ColorUtils {
-    @UtilityClass
+    private ColorUtils() {}
+
     public static class Qualities {
-        public static Colors common() {
-            return Colors.GREEN;
+
+        private Qualities() {}
+
+        public static Color common() {
+            return Color.GREEN;
         }
 
-        public static Colors uncommon() {
-            return Colors.BLUE;
+        public static Color uncommon() {
+            return Color.BLUE;
         }
 
-        public static Colors epic() {
-            return Colors.DARK_PURPLE;
+        public static Color epic() {
+            return Color.DARK_PURPLE;
         }
 
-        public static Colors legendary() {
-            return Colors.YELLOW;
+        public static Color legendary() {
+            return Color.YELLOW;
         }
 
-        public static Colors mythic() {
-            return Colors.RED;
+        public static Color mythic() {
+            return Color.RED;
         }
     }
 }

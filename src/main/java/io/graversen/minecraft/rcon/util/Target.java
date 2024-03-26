@@ -13,7 +13,7 @@ public class Target {
         return new Target(playerName);
     }
 
-    public static Target selector(Selectors selector) {
+    public static Target selector(Selector selector) {
         return new Target(selector.getSelectorString());
     }
 

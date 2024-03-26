@@ -10,7 +10,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     private boolean bold;
     private boolean italic;
     private boolean underlined;
-    private boolean striketrough;
+    private boolean strikethrough;
     private boolean obfuscated;
     private String color;
     private ClickEvent clickEvent;
@@ -23,12 +23,12 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     }
 
     @Override
-    public TellRawCommandBuilder targeting(Selectors usingSelector) {
+    public TellRawCommandBuilder targeting(Selector usingSelector) {
         this.target = Target.selector(usingSelector);
         return this;
     }
 
-    public TellRawCommandBuilder withColor(Colors color) {
+    public TellRawCommandBuilder withColor(Color color) {
         this.color = color.getColorName();
         return this;
     }
@@ -54,7 +54,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     }
 
     public TellRawCommandBuilder strikethrough() {
-        this.striketrough = true;
+        this.strikethrough = true;
         return this;
     }
 
@@ -63,13 +63,13 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
         return this;
     }
 
-    public TellRawCommandBuilder withClickEvent(ClickEventActions clickEventAction, String value) {
+    public TellRawCommandBuilder withClickEvent(ClickEventAction clickEventAction, String value) {
         this.clickEvent = new ClickEvent(clickEventAction.name().toLowerCase(), value);
         return this;
     }
 
     public TellRawCommandBuilder withHoverTextEvent(TellRawCommand tellRawCommand) {
-        this.hoverEvent = new HoverEvent(HoverEventActions.SHOW_TEXT.name().toLowerCase(), new TextContent[]{tellRawCommand.toTextContent()});
+        this.hoverEvent = new HoverEvent(HoverEventAction.SHOW_TEXT.name().toLowerCase(), new TextContent[]{tellRawCommand.toTextContent()});
         return this;
     }
 
@@ -81,7 +81,7 @@ public class TellRawCommandBuilder implements ITargetingCommandBuilder<TellRawCo
     @Override
     public TellRawCommand build() {
         if (validate()) {
-            return new TellRawCommand(target, text, bold, italic, underlined, striketrough, obfuscated, color, clickEvent, hoverEvent);
+            return new TellRawCommand(target, text, bold, italic, underlined, strikethrough, obfuscated, color, clickEvent, hoverEvent);
         } else {
             throw new IllegalArgumentException("Could not construct valid TellRaw Command");
         }

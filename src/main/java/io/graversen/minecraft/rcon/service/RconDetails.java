@@ -4,11 +4,7 @@ import io.graversen.minecraft.rcon.Defaults;
 
 import java.util.Objects;
 
-public class RconDetails {
-    private final String hostname;
-    private final int port;
-    private final String password;
-
+public record RconDetails(String hostname, int port, String password) {
     public RconDetails(String hostname, int port, String password) {
         this.hostname = Objects.requireNonNull(hostname, "Hostname cannot be null");
         this.port = port;
@@ -23,24 +19,11 @@ public class RconDetails {
         return new RconDetails("localhost", Defaults.RCON_PORT, password);
     }
 
-    public String getHostname() {
-        return hostname;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
     @Override
     public String toString() {
         return "RconDetails{" +
-                "hostname='" + hostname + '\'' +
+                "hostname='" + hostname + "'" +
                 ", port=" + port +
-                ", password='" + "******" + '\'' +
-                '}';
+                ", password='******'}";
     }
 }

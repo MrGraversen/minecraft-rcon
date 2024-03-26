@@ -2,10 +2,10 @@ package io.graversen.minecraft.rcon.commands.title;
 
 import io.graversen.minecraft.rcon.commands.base.ICommandBuilder;
 import io.graversen.minecraft.rcon.commands.base.ITargetingCommandBuilder;
-import io.graversen.minecraft.rcon.util.Colors;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Color;
+import io.graversen.minecraft.rcon.util.Selector;
 import io.graversen.minecraft.rcon.util.Target;
-import io.graversen.minecraft.rcon.util.TitlePositions;
+import io.graversen.minecraft.rcon.util.TitlePosition;
 
 public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleCommandBuilder>, ICommandBuilder<TitleCommand> {
     private Target target;
@@ -14,7 +14,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     private boolean bold;
     private boolean italic;
     private boolean underlined;
-    private boolean striketrough;
+    private boolean strikethrough;
     private boolean obfuscated;
     private String color;
 
@@ -25,17 +25,17 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     }
 
     @Override
-    public TitleCommandBuilder targeting(Selectors usingSelector) {
+    public TitleCommandBuilder targeting(Selector usingSelector) {
         this.target = Target.selector(usingSelector);
         return this;
     }
 
-    public TitleCommandBuilder atPosition(TitlePositions titlePosition) {
+    public TitleCommandBuilder atPosition(TitlePosition titlePosition) {
         this.position = titlePosition.getTitlePositionValue();
         return this;
     }
 
-    public TitleCommandBuilder withColor(Colors color) {
+    public TitleCommandBuilder withColor(Color color) {
         this.color = color.getColorName();
         return this;
     }
@@ -61,7 +61,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     }
 
     public TitleCommandBuilder strikethrough() {
-        this.striketrough = true;
+        this.strikethrough = true;
         return this;
     }
 
@@ -78,7 +78,7 @@ public class TitleCommandBuilder implements ITargetingCommandBuilder<TitleComman
     @Override
     public TitleCommand build() {
         if (validate()) {
-            return new TitleCommand(target, text, position, bold, italic, underlined, striketrough, obfuscated, color);
+            return new TitleCommand(target, text, position, bold, italic, underlined, strikethrough, obfuscated, color);
         } else {
             throw new IllegalArgumentException("Could not construct valid Title Command");
         }

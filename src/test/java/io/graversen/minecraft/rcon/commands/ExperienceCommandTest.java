@@ -1,7 +1,7 @@
 package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.util.Experience;
-import io.graversen.minecraft.rcon.util.Selectors;
+import io.graversen.minecraft.rcon.util.Selector;
 import io.graversen.minecraft.rcon.util.Target;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class ExperienceCommandTest {
     @Test
     void add() {
-        final var experienceCommand = ExperienceCommand.add(Target.selector(Selectors.ALL_PLAYERS), Experience.levels(10));
+        final var experienceCommand = ExperienceCommand.add(Target.selector(Selector.ALL_PLAYERS), Experience.levels(10));
         assertEquals("experience add @a 10 levels", experienceCommand.command());
     }
 

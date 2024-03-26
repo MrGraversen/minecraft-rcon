@@ -10,7 +10,11 @@ public interface IMinecraftRcon {
 
     Future<RconResponse> sendAsync(ICommand command);
 
+    void sendAsync(Runnable onCompletion, ICommand command);
+
     void sendAsync(ICommand... commands);
+
+    void sendAsync(Runnable onCompletion, ICommand... commands);
 
     <T> T query(ICommand command, IRconResponseMapper<T> rconResponseMapper);
 }

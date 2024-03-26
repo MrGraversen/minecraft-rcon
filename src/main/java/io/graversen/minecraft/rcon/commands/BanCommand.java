@@ -2,9 +2,7 @@ package io.graversen.minecraft.rcon.commands;
 
 import io.graversen.minecraft.rcon.commands.base.BaseTargetedCommand;
 import io.graversen.minecraft.rcon.util.Target;
-import org.apache.commons.text.StringSubstitutor;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class BanCommand extends BaseTargetedCommand {
@@ -12,7 +10,7 @@ public class BanCommand extends BaseTargetedCommand {
 
     public BanCommand(Target target, String reason) {
         super(target);
-        this.reason = Objects.requireNonNullElse(reason, "Banned");
+        this.reason = Objects.requireNonNullElse(reason, "");
     }
 
     public String getReason() {
@@ -21,12 +19,6 @@ public class BanCommand extends BaseTargetedCommand {
 
     @Override
     public String command() {
-        return StringSubstitutor.replace(
-                "ban ${target} ${reason}",
-                Map.of(
-                        "target", getTarget(),
-                        "reason", getReason()
-                )
-        );
+        return ("ban " + getTarget() + " " + getReason()).trim();
     }
 }
